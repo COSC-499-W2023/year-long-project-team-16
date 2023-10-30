@@ -42,7 +42,8 @@
                             <label for="pdf-upload">Upload PDF:</label>
                             <input type="file" id="pdf-upload" name="pdf-upload" accept=".pdf" required>
                         </div>
-                        <button type="submit">Generate</button>
+                        <button type="submit" id="generate-button">Generate</button>
+
                     </form>
                 </div>
             </div>
@@ -51,5 +52,18 @@
     <div id="footer">
         &copy; 2023 CoursifyAI. All rights reserved.
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('content-form');
+            var generateButton = document.getElementById('generate-button');
+        
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                generateButton.innerHTML = "Download";
+                generateButton.style.color = "red";
+            });
+        });
+        </script>
+        
 </body>
 </html>
