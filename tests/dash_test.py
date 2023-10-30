@@ -78,13 +78,34 @@ def test_menu_items(browser):
         #home = sidebar.find_element(By.LINK_TEXT, "Home")
         #assert home.is_displayed(), "home link is missing"
 
-        # To iterate through the items in the toolbar and their corresponding IDs
+        # To store the text of the toolbar items and their IDs
         toolbar_items = {
-            
-
+            "Home":"home",
+            "My Content":"mycontent",
+            "Settings":"Settings",
+            "My Profile":"profile",
+            "Logout":"logout",
         }
+        # for loop iterates over each item in toolbar items.
+        #checks if every item is displayed
+        for item_text, item_id in toolbar_items.items():
+            item = sidebar.find_element(By.LINK_TEXT, item_text)
+            assert item.is_displayed(), f"{item_text} link is missing"
     else:
         assert False, "Login was not successful"
+
+def test_generate_content(browser):
+    login(browser, "remy123@gmail.com", "remy123")
+    submit_button = browser.find_elements(By.CSS_SELECTOR, ".btn.btn-primary.btn-block")
+
+    if len(submit_button)==0:
+        content_form = WebDriverWait(browser,10).until(
+            EC.presence_of_element_located((By.ID, "content-form")) #expected conditions
+        )
+        assert content_form.is_displayed(), "From is missing"
+    else:
+        assert False, "Login was not successful"
+
 
 
 
