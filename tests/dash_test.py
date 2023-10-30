@@ -48,10 +48,43 @@ def test_sidebar_header(browser):
     #checks if the list of elements matching the login button selector is empty (length = 0)
     if len(submit_button)==0:
         sidebar_header = WebDriverWait(browser,10).until(
-            EC.presence_of_element_located((By.ID, "sidebar-header")) #expected conditions
+            EC.presence_of_element_located((By.ID, "name of sidebar-header")) #expected conditions
         )
         assert sidebar_header.is_displayed(), "Sidebar header is missing"
+        assert "My Dashboard" in sidebar_header.text, "The text'My dashboard' is not present"
     else:
         assert False, "Login was not successful"
+
+def test_sidebar_logo(browser):
+    login(browser, "remy123@gmail.com", "remy123")
+    submit_button = browser.find_elements(By.CSS_SELECTOR, ".btn.btn-primary.btn-block")
+    #checks if the list of elements matching the login button selector is empty (length = 0)
+    if len(submit_button)==0:
+        logo = WebDriverWait(browser,10).until(
+            EC.presence_of_element_located((By.TAG_NAME, "name of image")) #expected conditions
+        )
+        assert logo.is_displayed(), "logo is missing"
+    else:
+        assert False, "Login was not successful"
+
+def test_menu_items(browser):
+    login(browser, "remy123@gmail.com", "remy123")
+    submit_button = browser.find_elements(By.CSS_SELECTOR, ".btn.btn-primary.btn-block")
+
+    if len(submit_button)==0:
+        sidebar = WebDriverWait(browser,10).until(
+            EC.presence_of_element_located((By.ID, "sidebar")) #expected conditions
+        )
+        #home = sidebar.find_element(By.LINK_TEXT, "Home")
+        #assert home.is_displayed(), "home link is missing"
+
+        # To iterate through the items in the toolbar and their corresponding IDs
+        toolbar_items = {
+            
+
+        }
+    else:
+        assert False, "Login was not successful"
+
 
 
