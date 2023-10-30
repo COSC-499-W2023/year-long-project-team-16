@@ -176,3 +176,49 @@ button[type="submit"]:hover {
 #login a:hover {
     background-color: #444
 }
+.settings-container-1{
+    display: flex;
+    
+    
+}
+
+.settings-container-2{
+    display: flex;
+   
+}
+.settings-container-a{
+    display: flex;
+    
+    margin-right: 200px;
+    padding: 20px;
+    margin-bottom: 100px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.settings-container-b{
+    display: flex;
+    
+    
+    padding: 20px;
+    margin-bottom: 100px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.settings-container-c{
+    display: flex;
+    
+    margin-right: 281.5px;
+    padding: 20px;
+    margin-bottom: 100px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+.settings-container-d{
+    display: flex;
+    
+    
+    padding: 20px;
+    margin-bottom: 100px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
