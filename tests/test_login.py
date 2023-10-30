@@ -43,7 +43,7 @@ def test_incorrect_username(browser):
     )
     email_input.send_keys(email1)
     email_input_value = email_input.get_attribute("value")
-    assert correct_email != email_input_value, f"Expected email to be '{email1}' but got '{email_input_value}'"
+    assert correct_email != email_input_value, f"Expected email to not be 'test@example.com' but got 'test@example.com'"
 
 def test_incorrect_password(browser):
     correct_email = "test@example.com"
