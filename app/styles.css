@@ -222,3 +222,20 @@ button[type="submit"]:hover {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
+.profile_container{
+    display: flex;
+    padding-right: 27.5rem;
+    border: 2px solid red;
+}
+
+
+.pic_container img{
+    height: 10rem;
+}
+.detail_container{
+    
+    margin-left: 5rem;
+}
+
+
+
