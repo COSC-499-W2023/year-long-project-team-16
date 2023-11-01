@@ -1,3 +1,5 @@
+# This file does not require loging in to test each function
+
 import pytest #testing framework 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
