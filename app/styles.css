@@ -225,7 +225,7 @@ button[type="submit"]:hover {
 .profile_container{
     display: flex;
     padding-right: 27.5rem;
-    border: 2px solid red;
+    
 }
 
 
