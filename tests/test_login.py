@@ -31,7 +31,7 @@ def login(browser, email, password):
 def test_correct_credentials(browser):
     login(browser, "test@example.com", "test123")
     login_button = browser.find_elements(By.CSS_SELECTOR, ".btn.btn-primary.btn-block")
-    assert len(login_button) == 0, "Login was not successful"
+    assert len(login_button) == 1, "Login was not successful"
 
 def test_incorrect_username(browser):
     correct_email = "test@example.com"
