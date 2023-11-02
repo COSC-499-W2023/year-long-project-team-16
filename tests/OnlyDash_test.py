@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-LOGIN_PAGE_URL = "http://localhost:8000/index.html"
+LOGIN_PAGE_URL = "http://localhost:8000/app/index.html"
 
 @pytest.fixture(scope="function")
 def browser():
@@ -34,7 +34,7 @@ def test_sidebar_logo(browser: WebDriver):
     browser.get(LOGIN_PAGE_URL)
     try:
         logo = WebDriverWait(browser,10).until(
-        EC.presence_of_element_located((By.TAG_NAME, "logo.png")) #REPLACE
+        EC.presence_of_element_located((By.ID, "logo")) #REPLACE
         )
         assert logo.is_displayed(), "logo is missing"
     except TimeoutException:
