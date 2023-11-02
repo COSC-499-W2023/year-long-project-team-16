@@ -44,8 +44,6 @@ async function handleRegister(event) {
     }
 }
 
-
-
 async function handleLogin(event) {
     event.preventDefault();
 
@@ -64,9 +62,6 @@ async function handleLogin(event) {
         alert(error.message);
     }
 }
-
-
-
 
 const registerForm = document.getElementById('register-form');
 if (registerForm) {
