@@ -4,6 +4,8 @@
 # 4.check if "generate content is present"
 # 5.check if the content form is present
 
+# Each test function in this file requires the correct log in credentials.
+
 import pytest #testing framework 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
