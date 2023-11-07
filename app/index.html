@@ -1,94 +1,108 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Welcome to CoursifyAI</title>
-    <link rel="stylesheet" type="text/css" href="styles.css" />
-  </head>
-  <body>
-    <div id="sidebar">
-      <div id="sidebar-header">
-        <h2>My Dashboard</h2>
-        <img src="logo.png" alt="Dashboard Image" id="logo" />
-      </div>
-      <div id="toolbar">
-        <ul>
-          <li>
-            <a href="#home"><i class="fa fa-home"></i> Home</a>
-          </li>
-          <li>
-            <a href="content.html"><i class="fa fa-file"></i> My Content</a>
-          </li>
-          <li>
-            <a href="Settings.html"><i class="fa fa-cog"></i> Settings</a>
-          </li>
-          <li>
-            <a href="profile.html"><i class="fa fa-user"></i> My Profile</a>
-          </li>
-          <li>
-            <a href="#logout"><i class="fa fa-sign-out"></i> Logout</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <div id="content">
-      <div id="title-box">
-        <div class="content-container">
-          <h1>Generate Content</h1>
-          <div class="form-container">
-            <form id="content-form" action="#" method="post">
-              <div class="form-group">
-                <label for="length">Length of Content:</label>
-                <input
-                  type="number"
-                  id="length"
-                  name="length"
-                  placeholder="Enter length (e.g., 1000 words)"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="difficulty">Difficulty (0-3):</label>
-                <input type="number" id="difficulty" name "difficulty" min="0"
-                max="3" required>
-              </div>
-              <div class="form-group">
-                <label for="topics">Main Topics:</label>
-                <input
-                  type="text"
-                  id="topics"
-                  name="topics"
-                  placeholder="Enter main topics"
-                  required
-                />
-              </div>
-              <div class="form-group">
-                <label for="pdf-upload">Upload PDF:</label>
-                <input
-                  type="file"
-                  id="pdf-upload"
-                  name="pdf-upload"
-                  accept=".pdf"
-                  required
-                />
-              </div>
-              <button type="submit" id="generate-button">Generate</button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="footer">&copy; 2023 CoursifyAI. All rights reserved.</div>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        var form = document.getElementById("content-form");
-        var generateButton = document.getElementById("generate-button");
+<html land="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Coursify.ai</title>
 
-        form.addEventListener("submit", function (e) {
-          e.preventDefault();
-          generateButton.innerHTML = "Download";
-          generateButton.style.color = "red";
-        });
-      });
-    </script>
-  </body>
+        <link rel="stylesheet" href="style.css">
+
+
+    </head>
+    <body>
+        <!--header design-->
+        <header class="header">
+            <div class="link_container">
+            <a href="index.html"><img src="cap_logo1.png"></a>
+        </div>
+
+        <div class="link_container">
+
+
+            <nav class="navbar">
+                <a href="index.html">HOME</a>
+                <a href="content.html">MY CONTENT</a>
+                <a href="settings.html">SETTINGS</a>
+                <a href="ai.html">AI ASSISTANT</a>
+                <a href="">LOGOUT</a>
+            </div>
+        </nav>
+            
+        </header>
+
+        <!--home section-->
+        <section class="home" id="home">
+            <div class="left">
+                <h1>Welcome to Coursify.ai</h1>
+                <h2>As an educator, you are forced to make slides you dont want to.</h2>
+                <h2>Don't worry, we will make them for you.</h2>
+            </div>
+            <div class="right">
+                <div id="content">
+                    <div id="title-box">
+                      <div class="content-container">
+                        <h1>Generate Content</h1>
+                        <div class="form-container">
+                          <form id="content-form" action="#" method="post">
+                            <div class="form-group">
+                              <label for="length">Length of Content:</label>
+                              <input
+                                type="number"
+                                id="length"
+                                name="length"
+                                placeholder="Enter length (e.g., 1000 words)"
+                                required
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="difficulty">Difficulty (0-3):</label>
+                              <input type="number" id="difficulty" name "difficulty" min="0"
+                              max="3" required>
+                            </div>
+                            <div class="form-group">
+                              <label for="topics">Main Topics:</label>
+                              <input
+                                type="text"
+                                id="topics"
+                                name="topics"
+                                placeholder="Enter main topics"
+                                required
+                              />
+                            </div>
+                            <div class="form-group">
+                              <label for="pdf-upload">Upload PDF:</label>
+                              <input
+                                type="file"
+                                id="pdf-upload"
+                                name="pdf-upload"
+                                accept=".pdf"
+                                required
+                              />
+                            </div>
+                            <button type="submit" id="generate-button">Generate</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                      var form = document.getElementById("content-form");
+                      var generateButton = document.getElementById("generate-button");
+              
+                      form.addEventListener("submit", function (e) {
+                        e.preventDefault();
+                        generateButton.innerHTML = "Download";
+                        generateButton.style.color = "red";
+                      });
+                    });
+                  </script>
+ 
+            </div>
+            </div>
+        </section>
+        <div id="footer">&copy; 2023 CoursifyAI. All rights reserved.</div>   
+    </body>
 </html>
