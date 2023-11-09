@@ -19,12 +19,15 @@
 html {
     font-size: 62.5%;
     overflow-x: hidden;
-
+    height: 100%;
+    width: 100%;
 }
 
 body{
     background: var(--bg-color);
     color: var(--text-color);
+    height: 100%;
+    width: 100%;
 }
 
 section{
@@ -33,6 +36,7 @@ section{
 }
 
 header{
+    display: block;
     position: fixed;
     top: 0;
     left: 0;
@@ -52,6 +56,9 @@ header{
     color: var(--text-color);
     margin-left: 4rem;
 }
+.navbar{
+    display: block;
+}
 
 .home{
     display: flex;
@@ -66,12 +73,14 @@ header{
     font-weight: 700;
     line-height: 2;
     align-items: center;
+    display: block;
 }
 .left h2{
     display: flex;
     align-items: center;
     text-align: center;
     justify-content: center;
+    display: block;
 }
 
 .navbar a:hover{
@@ -166,4 +175,63 @@ button[type="submit"]:hover {
 .right h1{
     align-items: center;
     position:sticky
+}
+.bx-menu{
+    display: none;
+}
+
+
+
+@media (max-width: 1200px){
+    html{
+        font-size: 55%;
+    }
+}
+@media (max-width: 991px){
+    .header{
+        padding: 2rem 3%;
+    }
+
+    section{
+        padding: 10rem 3% 2rem;
+    }
+
+    .footer{
+        padding: 2rem 3%;
+    }
+
+}
+
+@media (max-width: 768px){
+    .bx-menu{
+        display: block;
+        font-size: 3.5rem;
+        cursor: pointer;
+    }
+   
+    .navbar{
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 1rem 3%;
+        background: var(--bg-color);
+        border-top: .1rem solid rgba(0, 0, 0, 0.2);
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.2);
+        display: none;
+    }
+
+    .navbar.active{
+        display: block;
+    }
+
+    .navbar a {
+        display: block;
+        font-size: 2rem;
+        margin: 3rem 0;
+    }
+    .home{
+        display: flex;
+        flex-direction: column;
+    }
 }
