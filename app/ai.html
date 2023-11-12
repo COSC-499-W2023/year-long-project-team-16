@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant - Coursify.ai</title>
+
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <link href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500&display=swap' rel='stylesheet'>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+   
+    <header class="header">
+        <div class="link_container">
+            <a href="index.html"><img src="cap_logo1.png" alt="Coursify.ai Logo"></a>
+        </div>
+
+        <nav class="navbar">
+            <a href="index.html">HOME</a>
+            <a href="content.html">MY CONTENT</a>
+            <a href="settings.html">SETTINGS</a>
+            <a href="ai.html" class="active">AI ASSISTANT</a>
+            <a href="">LOGOUT</a>
+        </nav>
+        <i class='bx bx-menu'></i>
+    </header>
+
+    
+    <section id="ai-assistant">
+        <div class="ai-chatbot-container">
+            <div class="ai-chatbot-header">
+                <h2>AI Chatbot</h2>
+            </div>
+            <div class="ai-chatbot-body">
+                
+            </div>
+            <div class="ai-chatbot-footer">
+                <input type="text" placeholder="Type your message here..." id="chat-input">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer">
+        &copy; 2023 CoursifyAI. All rights reserved.
+    </footer>
+
+    <script>
+        function sendMessage() {
+            var input = document.getElementById("chat-input");
+            
+            input.value = ''; // 
+        }
+    </script>
+</body>
+</html>
+

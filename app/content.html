@@ -1,48 +1,93 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Welcome to CoursifyAI</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Content - Coursify.ai</title>
+
+    <!-- Icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- Google Fonts -->
+    <link href='https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;400;500&display=swap' rel='stylesheet'>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
-    <div id="sidebar">
-        <div id="sidebar-header">
-            <h2>My Dashboard</h2>
-            <img src="logo.png" alt="Dashboard Image">
+    <!-- Header -->
+    <header class="header">
+        <div class="link_container">
+            <a href="index.html"><img src="cap_logo1.png" alt="Coursify.ai Logo"></a>
         </div>
-        <div id="toolbar">
-            <ul>
-                <li><a href="#home"><i class="fa fa-home"></i> Home</a></li>
-                <li><a href="content.html"><i class="fa fa-file"></i> My Content</a></li>
-                <li><a href="Settings.html"><i class="fa fa-cog"></i> Settings</a></li>
-                <li><a href="profile.html"><i class="fa fa-user"></i> My Profile</a></li>
-                <li><a href="#logout"><i class="fa fa-sign-out"></i> Logout</a></li>
-            </ul>
+
+        <nav class="navbar">
+            <a href="index.html">HOME</a>
+            <a href="content.html" class="active">MY CONTENT</a>
+            <a href="settings.html">SETTINGS</a>
+            <a href="ai.html">AI ASSISTANT</a>
+            <a href="">LOGOUT</a>
+        </nav>
+        <i class='bx bx-menu'></i>
+    </header>
+
+    <!-- My Content Section -->
+    <section id="my-content">
+        <div class="content-header">
+            <h1>My Notes</h1>
+            
         </div>
-    </div>
-    <div id="content">
-        <div id="title-box">
-            <div class="content-container">
-                <h1>My Content</h1>
-                
+        <div class="notes-container">
+            <!-- Note Cards -->
+            <div class="note-card">
+                <div class="note-title">Note Title 1</div>
+                <div class="note-summary">Brief summary of the note...</div>
+                <button class="download-btn">Download</button>
             </div>
+            <div class="note-card">
+                <div class="note-title">Note Title 1</div>
+                <div class="note-summary">Brief summary of the note...</div>
+                <button class="download-btn">Download</button>
+            </div>
+            <div class="note-card">
+                <div class="note-title">Note Title 1</div>
+                <div class="note-summary">Brief summary of the note...</div>
+                <button class="download-btn">Download</button>
+            </div>
+            <div class="note-card">
+                <div class="note-title">Note Title 1</div>
+                <div class="note-summary">Brief summary of the note...</div>
+                <button class="download-btn">Download</button>
+            </div>
+            <div class="note-card">
+                <div class="note-title">Note Title 1</div>
+                <div class="note-summary">Brief summary of the note...</div>
+                <button class="download-btn">Download</button>
+            </div>
+            <div class="note-card">
+                <div class="note-title">Note Title 1</div>
+                <div class="note-summary">Brief summary of the note...</div>
+                <button class="download-btn">Download</button>
+            </div>
+            <div class="note-card">
+                <div class="note-title">Note Title 1</div>
+                <div class="note-summary">Brief summary of the note...</div>
+                <button class="download-btn">Download</button>
+            </div>
+            <div class="note-card">
+                <div class="note-title">Note Title 1</div>
+                <div class="note-summary">Brief summary of the note...</div>
+                <button class="download-btn">Download</button>
+            </div>
+            <!-- Repeat for more note cards -->
+            <!-- Add more cards as needed -->
         </div>
-    </div>
-    <div id="footer">
+    </section>
+
+    <footer id="footer">
         &copy; 2023 CoursifyAI. All rights reserved.
-    </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var form = document.getElementById('content-form');
-            var generateButton = document.getElementById('generate-button');
-        
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                generateButton.innerHTML = "Download";
-                generateButton.style.color = "red";
-            });
-        });
-        </script>
-        
+    </footer>
 </body>
 </html>
