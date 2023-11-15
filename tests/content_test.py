@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-LOGIN_PAGE_URL = "http://localhost:8000/app/index.html"
+LOGIN_PAGE_URL = "http://localhost:8000/app/content.html"
 
 @pytest.fixture(scope="function")
 def browser():
@@ -23,7 +23,7 @@ def test_sidebar_header(browser: WebDriver):
     browser.get(LOGIN_PAGE_URL)
     try:
         sidebar_header = WebDriverWait(browser,10).until(
-            EC.presence_of_element_located((By.ID, "head")) #REPLACE
+            EC.presence_of_element_located((By.ID, "title")) #REPLACE
         )
         assert sidebar_header.is_displayed(), "Sidebar header is missing"
         #assert "My Dashboard" in sidebar_header.text, "The text'My dashboard' is not present"
@@ -62,12 +62,12 @@ def test_menu_items(browser: WebDriver):
     except TimeoutException:
         pytest.fail("menu items not found")
 
-def test_generate_content(browser: WebDriver):
+def test_my_content(browser: WebDriver):
     browser.get(LOGIN_PAGE_URL)
     try:
-        content_form = WebDriverWait(browser,10).until(
-        EC.presence_of_element_located((By.ID, "content-form")) #expected conditions
+        notes = WebDriverWait(browser,10).until(
+        EC.presence_of_element_located((By.CLASS_NAME, "notes-container")) #expected conditions
         )
-        assert content_form.is_displayed(), "Form is missing"
+        assert notes.is_displayed(), "Form is missing"
     except TimeoutException:
         pytest.fail("from not found")
