@@ -71,13 +71,3 @@ def test_generate_content(browser: WebDriver):
         assert content_form.is_displayed(), "Form is missing"
     except TimeoutException:
         pytest.fail("from not found")
-
-
-
-
-
-
-
-
-
-  
