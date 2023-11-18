@@ -1,5 +1,5 @@
 // Placeholder user information
-
+/*
 var user_full_name = "Andy"; // Ideally, this would come from a server or database
 var user_username = "AndyUser";
 var user_email = "andy@example.com";
@@ -13,3 +13,5 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('password').value = password;
     document.getElementById('bio').value = bio;
 });
+
+*/
