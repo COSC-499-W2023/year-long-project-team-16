@@ -19,21 +19,21 @@
     />
 
     <!-- Main Stylesheet -->
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   </head>
   <body>
     <!-- Header -->
     <header class="header">
       <div class="link_container">
-        <a href="index.html"
-          ><img src="cap_logo1.png" alt="Coursify.ai Logo" id="logo"
+        <a href="{{ url_for('index') }}"
+          ><img src="{{ url_for('static', filename='cap_logo1.png') }}" alt="Coursify.ai Logo" id="logo"
         /></a>
       </div>
 
       <nav class="navbar">
         <div id="sidebar">
-            <a href="index.html" id = "home">HOME</a>
-            <a href="content.html" id = "content">MY CONTENT</a>
+            <a href="{{ url_for('index') }}" id = "home">HOME</a>
+            <a href="{{ url_for('content') }}" id = "content">MY CONTENT</a>
             <a href="settings.html" id = "settings">SETTINGS</a>
             <a href="ai.html" id = >AI ASSISTANT</a>
             <a href="" id="logout">LOGOUT</a>
