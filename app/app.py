@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import re
 import random
@@ -61,6 +62,14 @@ def render_latex(formula, fontsize=12, dpi=150):
     return buffer
 
 
+def sanitize_filename(text):
+    """Sanitize a string to be used as a filename."""
+    # Remove invalid filename characters
+    valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+    sanitized = ''.join(c for c in text if c in valid_chars)
+    # Truncate the filename if it's too long
+    return sanitized[:255]
+
 
 def wrap_text(text, max_width, font_name, font_size):
     # Function to wrap text
@@ -86,6 +95,16 @@ def generate_pdf():
     length = request.form.get('length', type=int, default=100)
     prompt = request.form.get('topics', default='')
 
+    pdf_basename = sanitize_filename(prompt)
+
+    # Ensure the filename is not empty
+    pdf_basename = pdf_basename if pdf_basename else 'generated_file'
+
+    # Add a timestamp or random string to the filename to ensure uniqueness
+    timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+    unique_suffix = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+    pdf_filename = f"{pdf_basename}_{timestamp}_{unique_suffix}.pdf"
+
     # Set OpenAI API key and get response
     openai.api_key = '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'  
     response = openai.Completion.create(
@@ -103,7 +122,6 @@ def generate_pdf():
     line_height = 14
 
     # Generate PDF
-    pdf_filename = 'generated_file.pdf'
     pdf_path = os.path.join(pdf_directory, pdf_filename)
     c = canvas.Canvas(pdf_path, pagesize=letter)
     c.setFont(font_name, font_size)
