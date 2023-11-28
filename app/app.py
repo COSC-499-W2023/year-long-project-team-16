@@ -21,6 +21,16 @@ def index():
 def content():
     return render_template('content.html')
 
+
+@app.route('/settings.html')
+def settings_html():
+    return render_template('settings.html')
+
+
+@app.route('/ai.html')
+def ai_html():
+    return render_template('ai.html')
+
 def wrap_text(text, max_width, font_name, font_size):
     # Function to wrap text
     wrapped_text = []
