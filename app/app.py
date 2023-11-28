@@ -9,7 +9,7 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from flask_cors import CORS
 import openai 
 
-# If your HTML files are in a folder named 'my_templates' in the same directory as this script
+
 app = Flask(__name__, template_folder='my_templates')
 CORS(app)
 
@@ -46,7 +46,7 @@ def generate_pdf():
     random_text = ''.join(random.choices(string.ascii_lowercase + ' ', k=length))
     prompt = request.form.get('topics', default='')
 
-    openai.api_key = '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'  # Replace with your actual OpenAI API key
+    openai.api_key = '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'  
     response = openai.Completion.create(
         engine="text-davinci-003",
         prompt=prompt,
@@ -80,7 +80,7 @@ def generate_pdf():
         y_position -= line_height
 
     # Draw the length below the text
-    c.drawString(left_margin, y_position - 20, f"Length: {length}")  # Adjust position as needed
+    c.drawString(left_margin, y_position - 20, f"Length: {length}")  
 
     c.save()
 
