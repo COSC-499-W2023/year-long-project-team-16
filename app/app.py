@@ -1,4 +1,5 @@
 import os
+import re
 import random
 import string
 from click import wrap_text
@@ -8,6 +9,9 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from flask_cors import CORS
 import openai 
+import matplotlib.pyplot as plt
+from io import BytesIO
+
 
 
 app = Flask(__name__, template_folder='my_templates')
@@ -31,6 +35,33 @@ def settings_html():
 def ai_html():
     return render_template('ai.html')
 
+def is_latex(text):
+    """Check if the text is a LaTeX expression."""
+    return bool(re.search(r"\$.*\$", text))
+
+def render_latex(formula, fontsize=12, dpi=150):
+    """Render LaTeX formula into an image."""
+    # Configure Matplotlib to use LaTeX for rendering
+    plt.rcParams['text.usetex'] = True
+    
+    # Set up a Matplotlib figure and text
+    fig = plt.figure()
+    fig.patch.set_alpha(0)
+    ax = fig.add_subplot(111)
+    ax.axis('off')
+    ax.patch.set_alpha(0)
+    # Use the formula within a TeX environment
+    ax.text(0, 0, f"\\begin{{equation}}{formula}\\end{{equation}}", fontsize=fontsize)
+    
+    # Save the figure to a BytesIO buffer
+    buffer = BytesIO()
+    fig.savefig(buffer, dpi=dpi, transparent=True, format='png')
+    plt.close(fig)
+    buffer.seek(0)
+    return buffer
+
+
+
 def wrap_text(text, max_width, font_name, font_size):
     # Function to wrap text
     wrapped_text = []
@@ -53,50 +84,51 @@ def generate_pdf():
 
     # Process form data
     length = request.form.get('length', type=int, default=100)
-    random_text = ''.join(random.choices(string.ascii_lowercase + ' ', k=length))
     prompt = request.form.get('topics', default='')
 
+    # Set OpenAI API key and get response
     openai.api_key = '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'  
     response = openai.Completion.create(
         engine="text-davinci-003",
         prompt=prompt,
-        max_tokens=100
+        max_tokens=1000
     )
     generated_text = response.choices[0].text.strip()
+
+    # Define font properties and margins
+    font_name = "Helvetica"
+    font_size = 12
+    left_margin = 72
+    top_margin = 720
+    line_height = 14
 
     # Generate PDF
     pdf_filename = 'generated_file.pdf'
     pdf_path = os.path.join(pdf_directory, pdf_filename)
     c = canvas.Canvas(pdf_path, pagesize=letter)
-
-    # Define font properties
-    font_name = "Helvetica"
-    font_size = 12
     c.setFont(font_name, font_size)
 
-    # Define margins and line height
-    left_margin = 72
-    top_margin = 720
-    line_height = 14
-
-    # Wrap the generated text
-    max_width = 450  # Adjust as needed
-    wrapped_text = wrap_text(generated_text, max_width, font_name, font_size)
-
-    # Draw the wrapped text
+    # Process the text
+    parts = re.split(r"(\$.*?\$)", generated_text)
     y_position = top_margin
-    for line in wrapped_text:
-        c.drawString(left_margin, y_position, line)
-        y_position -= line_height
 
-    # Draw the length below the text
-    c.drawString(left_margin, y_position - 20, f"Length: {length}")  
+    for part in parts:
+        if is_latex(part):
+            latex_image_io = render_latex(part[1:-1])  # Remove $ symbols
+            c.drawImage(latex_image_io, left_margin, y_position, width=200, height=100, preserveAspectRatio=True, anchor='n')
+            y_position -= 100  # Adjust for image height
+        else:
+            wrapped_text = wrap_text(part, 450, font_name, font_size)
+            for line in wrapped_text:
+                c.drawString(left_margin, y_position, line)
+                y_position -= line_height
 
     c.save()
 
     # Respond with the URL of the PDF
     pdf_url = url_for('get_pdf', filename=pdf_filename)
     return jsonify(success=True, pdf_url=pdf_url)
+
 
 @app.route('/pdf/<filename>')
 def get_pdf(filename):
