@@ -37,11 +37,11 @@ def ai_html():
     return render_template('ai.html')
 
 def is_latex(text):
-    """Check if the text is a LaTeX expression."""
+
     return bool(re.search(r"\$.*\$", text))
 
 def render_latex(formula, fontsize=12, dpi=150):
-    """Render LaTeX formula into an image."""
+
     # Configure Matplotlib to use LaTeX for rendering
     plt.rcParams['text.usetex'] = True
     
@@ -63,7 +63,6 @@ def render_latex(formula, fontsize=12, dpi=150):
 
 
 def sanitize_filename(text):
-    """Sanitize a string to be used as a filename."""
     # Remove invalid filename characters
     valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
     sanitized = ''.join(c for c in text if c in valid_chars)
@@ -150,7 +149,7 @@ def generate_pdf():
 
 @app.route('/pdf/<filename>')
 def get_pdf(filename):
-    directory = os.path.join(os.getcwd(), 'pdfs')  # 
+    directory = os.path.join(os.getcwd(), 'pdfs')   
     file_path = os.path.join(directory, filename)
     if os.path.exists(file_path):
         return send_from_directory(directory, filename)
