@@ -270,7 +270,7 @@ button[type="submit"]:hover {
     max-width: 800px; /* Adjust as needed */
     margin: 0 auto; /* Center the form */
     padding: 30px;
-    background-color: #333;
+    background-color: transparent;
     border-radius: 28px; /* Optional */
 }
 
@@ -305,3 +305,19 @@ button[type="submit"]:hover {
     box-sizing: border-box;
     color: #fff;
 }
+
+.settings-container {
+    display: flex;
+    align-items: flex-start;
+}
+
+.settings-list {
+    flex: 1;
+    /* Add additional styling such as padding, margin, etc. */
+}
+
+#settings-content {
+    flex: 2;
+    /* Add additional styling such as padding, margin, etc. */
+}
+
