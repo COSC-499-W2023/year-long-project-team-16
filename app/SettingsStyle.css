@@ -239,55 +239,60 @@ button[type="submit"]:hover {
 
 /* ----------------------------Settings Section Heading Styles------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------*/ 
-.settings h1 {
-    font-size: 30px; /* Adjust the size as needed */
-    font-weight: bold; /* Optional: if you want the text to be bold */
-    color: white; /* Adjust the color as needed */
-    text-align: left; /* Center aligns the text */
-    /* Additional styling properties if needed */
+
+/* --------------------------LEFT HAND SIDE MENU --------------------------*/
+.settings h1 { /*header*/
+    font-size: 40px; 
+    font-weight: bold; 
+    color: white; 
+    text-align: left; 
 }
 
-.settings-list {
-    font-size: 18px;
+.settings-list { /* Account, password, pref */
+    font-size: 20px;
     text-align: left;
-    list-style-type: none; /* Removes default list styling */
+    list-style-type: none; /* Removes bullet points from the links */
     padding: 0; /* Removes default padding */
     padding-left: 20px;
-    margin-top: 20px; /* Adds space between the heading and the list */
+    margin-top: 60px; /* Adds space between the heading and the list */
 }
 
 .settings-list li {
-    margin-bottom: 10px; /* Adds space between list items */
+    margin-bottom: 50px; /* Adds space between list items */
 }
 
 .settings-list li a {
-    color: #FFFFFF; /* Sets link color, change if needed */
+    color: #FFFFFF; 
     text-decoration: none; /* Removes underline from links */
-    /* Add other styles as needed */
 }
 
+
+/* -------------------FORMS------------------------------------------------------------ */
+/* makes the text field lengths smaller, moves the form more to the right */
 #account-settings-form {
-    max-width: 800px; /* Adjust as needed */
+    max-width: 800px; 
     margin: 0 auto; /* Center the form */
     padding: 30px;
     background-color: transparent;
-    border-radius: 28px; /* Optional */
+    border-radius: 28px; 
 }
-
+/* text fields on the side of the item name rather than under */ 
 .form-group {
-    font-size: 15px;
+    font-size: 18px;
+    font-weight:lighter;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 30px ;
+    margin-bottom: 50px ;
 }
-
+/* alligning the text fields */
 .form-group label {
     white-space: nowrap;
     width: 40%;
     min-width: 100px;
     margin-right: 10px;
 }
+
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="password"],
@@ -296,8 +301,8 @@ button[type="submit"]:hover {
     flex-grow: 1;
     padding: 8px;
     margin: 0;
-    width: auto; /* Or a specific width if you want to control it */
-    max-width: 50%; /* Adjust as needed */
+    width: auto; 
+    max-width: 50%; 
     background-color: transparent;
     border: none;
     border-bottom: 1px solid #ccc;
@@ -306,18 +311,19 @@ button[type="submit"]:hover {
     color: #fff;
 }
 
+/*----------------TO PLACE THE FORM ON THE RIGHT SIDE OF THE SCREEN ------------------------------------------*/
 .settings-container {
     display: flex;
     align-items: flex-start;
 }
-
 .settings-list {
     flex: 1;
-    /* Add additional styling such as padding, margin, etc. */
+    
 }
-
 #settings-content {
-    flex: 2;
-    /* Add additional styling such as padding, margin, etc. */
+    flex: 4;   /* adjust this to move the form left or right */ 
+}
+.selected {
+    background-color: #f0f0f0;
 }
 

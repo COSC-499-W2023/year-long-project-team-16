@@ -38,12 +38,12 @@
 
         <section class="settings">
             <h1> Settings </h1>
-            <div class=" settings-container">
+            <div class="settings-container">
                 <!-- Settings options list -->
                 <ul class="settings-list">
-                    <li><a href="#" id="account-settings-link">Account Settings</a></li>
+                    <li><a href="#" id="account-settings-link">Account</a></li>
                     <!-- name / username, Password, profile picture, contact details, bio, whether content is public or private.-->
-                    <li><a href="setting2.html">Notifications</a></li>
+                    <li><a href="#" id="password-settings-link">Password</a></li>
                     <!-- Email notifications and such-->
                     <li><a href="setting3.html">Preferences</a></li>
                     <!-- dark mode and other visual changed (if added)-->
@@ -51,13 +51,20 @@
             
                 <!-- WHERE THE FORMS WILL DISPLAY -->
                 <!-- THE ACCOUNT SETTINGS PAGE IS DISPLAYED BY DEFAULT -->
-
                 <div id="settings-content">
-                    <form id="account-settings-form">
-                        <!-- Full Name -->
+
+                    <!-- ACCOUNT SETTINGS FROM ---------------------------------->
+                    <form id="account-settings-form" class="settings-form">
+                        <!-- First Name -->
                         <div class="form-group">
-                            <label for="name">Full Name:</label>
-                            <input type="text" id="name" name="name" value="{user_full_name}" readonly>
+                            <label for="name">First Name:</label>
+                            <input type="text" id="firstname" name="lastname">
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="form-group">
+                            <label for="name"> Last Name:</label>
+                            <input type="text" id="firstname" name="lastname">
                         </div>
                 
                         <!-- Username -->
@@ -72,12 +79,6 @@
                             <input type="email" id="email" name="email">
                         </div>
                 
-                        <!-- Password  /// Bold out/// --> 
-                        <div class="form-group">
-                            <label for="password">Password:</label>
-                            <input type="password" id="password" name="password">
-                        </div>
-                
                         <!-- Profile Picture Upload-->
                         <div class="form-group">
                             <label for="profile-picture">Profile Picture:</label>
@@ -89,24 +90,58 @@
                             <button type="submit">Save Changes</button>
                         </div>
                     </form>
+
+                    <!-- PASSWORD SETTINGS FROM ------------------------------------------------------>
+                    <form id="password-settings-form" class="settings-form" style="display:none;">
+                        <!-- Current password -->
+                        <div class="form-group">
+                            <label for="current-password">Current Password:</label>
+                            <input type="password" id="current-password" name="current-password">
+                        </div>
+
+                        <!-- New Password -->
+                        <div class="form-group">
+                            <label for="new-password">New Password:</label>
+                            <input type="password" id="new-password" name="new-password">
+                        </div>
+
+                        <!-- Confirm New Password -->
+                        <div class="form-group">
+                            <label for="confirm-new-password">Confirm New Password:</label>
+                            <input type="password" id="confirm-new-password" name="confirm-new-password">
+                        </div>
+
+                        <!-- Save changes button -->
+                        <div class="form-group">
+                            <button type="submit">Save Changes</button>
+                        </div>
+                    </form>
+
                 </div>
             </div>    
         </section>
 
-        <!-- From Template -->
-        <script type="text/template" id="account-settings-form">
-            
-            
-
-        </script>
-
         <script> 
+            //DOMContent - waiting till the page is fully loaded
             document.addEventListener('DOMContentLoaded', function(){
-                document.getElementById('account-settings-link').addEventListener('click',function(){
-                    document.getElementById('settings-content').innerHTML = document.getElementById('account-settings-form').textContent;
-                });
+            
+                    function showForm(formID) {
+                        document.querySelectorAll('.settings-form').forEach(function(form){
+                            form.style.display = 'none';
+                        });
+                        document.getElementById(formID).style.display = 'block';
+                    }
+
+                    document.getElementById('account-settings-link').addEventListener('click', function() {
+                        showForm('account-settings-form');
+                    });
+
+                    document.getElementById('password-settings-link').addEventListener('click', function() {
+                        showForm('password-settings-form');
+                    });
+
+                    showForm('account-settings-form');
             });
         </script>
-
     </body>
 </html>
