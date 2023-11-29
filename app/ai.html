@@ -15,26 +15,15 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
+    <link rel="stylesheet" type="text/css" href="style.css" />
     <script src="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/lib/languages/python.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='styleai.css') }}"
-    />
+    <link rel="stylesheet" href="styleai.css" />
 
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/a11y-dark.min.css"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    <script>
-      var STATIC_gpt = "{{ url_for('static', filename='gpt.jpg') }}";
-      var STATIC_user = "{{ url_for('static', filename='user.png') }}";
-    </script>
   </head>
 
   <body>
@@ -44,7 +33,7 @@
           <h1 style="color: white">Chat Bot</h1>
         </div>
         <div class="col text-right">
-          <a href="{{ url_for('index') }}" class="btn btn-primary" id="home-btn"
+          <a href="index.html" class="btn btn-primary" id="home-btn"
             >Back to Home</a
           >
         </div>
@@ -74,10 +63,12 @@
 
         if (isUserMessage) {
           messageDiv.classList.add("user-message");
-          messageDiv.innerHTML = `<img src="${STATIC_user}" class="user-icon"><p>${message}</p>`;
+          messageDiv.innerHTML =
+            '<img src="user.png" class="user-icon"><p>' + message + "</p>";
         } else {
           messageDiv.classList.add("bot-message");
-          messageDiv.innerHTML = `<img src="${STATIC_gpt}" class="bot-icon"><p>${message}</p>`; // Use bot icon for bot messages
+          messageDiv.innerHTML =
+            '<img src="gpt.jpg" class="bot-icon"><p>' + message + "</p>";
         }
 
         chatBox.appendChild(messageDiv);
