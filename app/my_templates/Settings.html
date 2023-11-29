@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coursify.ai</title>
+
+    <!--icons-->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <!--Relationship of this sheet and the link-->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='SettingsStyle.css') }}"
+    />
+  </head>
+  <body>
+    <!--header design-->
+    <header class="header">
+      <!-- Click the logo to go back to the home page -->
+      <div class="link_container">
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='cap_logo1.png') }}" />
+        </a>
+      </div>
+
+      <!-- Rest of the header -->
+      <div class="link_container">
+        <nav class="navbar" >
+            <div id ="sidebar"></div>
+              <a href="{{ url_for('index') }}" id = "home">HOME</a>
+              <a href="{{ url_for('content') }}" id = "content">MY CONTENT</a>
+              <a href="settings.html" id = "settings">SETTINGS</a>
+              <a href="ai.html" id = >AI ASSISTANT</a>
+              <a href="" id="logout">LOGOUT</a>
+          </div>
+      </nav>
+      </div>
+      <!-- <i class='bx bx-menu'></i> -->
+    </header>
+
+    <section class="settings">
+      <h1>Settings</h1>
+      <!-- Settings options list -->
+      <ul class="settings-list">
+        <li><a href="#" id="account-settings-link">Account Settings</a></li>
+        <!-- name / username, Password, profile picture, contact details, bio, whether content is public or private.-->
+        <li><a href="setting2.html">Notifications</a></li>
+        <!-- Email notifications and such-->
+        <li><a href="setting3.html">Preferences</a></li>
+        <!-- dark mode and other visual changed (if added)-->
+      </ul>
+
+      <div id="settings-content"></div>
+    </section>
+
+    <!-- From Template -->
+    <script type="text/template" id="account-settings-form">
+
+      <form id="account-settings-form">
+          <!-- Full Name -->
+          <div class="form-group">
+              <label for="name">Full Name:</label>
+              <input type="text" id="name" name="name" value="{user_full_name}" readonly>
+          </div>
+
+          <!-- Username -->
+          <div class="form-group">
+              <label for="username"> Username: </label>
+              <input type="text" id="username" name="username">
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" id="email" name="email">
+          </div>
+
+          <!-- Password  /// Bold out/// -->
+          <div class="form-group">
+              <label for="password">Password:</label>
+              <input type="password" id="password" name="password">
+          </div>
+
+          <!-- Profile Picture Upload-->
+          <div class="form-group">
+              <label for="profile-picture">Profile Picture:</label>
+              <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
+          </div>
+
+          <!-- Save Button -->
+          <div class="form-group">
+              <button type="submit">Save Changes</button>
+          </div>
+      </form>
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document
+          .getElementById("account-settings-link")
+          .addEventListener("click", function () {
+            document.getElementById("settings-content").innerHTML =
+              document.getElementById("account-settings-form").textContent;
+          });
+      });
+    </script>
+  </body>
+</html>
