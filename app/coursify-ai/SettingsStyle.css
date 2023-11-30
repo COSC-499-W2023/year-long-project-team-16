@@ -318,29 +318,40 @@ button[type="submit"]:hover {
 }
 /* adjust this to move the form left or right */
 #settings-content {
-    flex: 4;    
+    flex: 2;    
 }
 
 /* HOVER EFFECTS    # for div || . for class */     
 
 
 .selected {
-    color: black;
+    color: greenyellow;
     font-weight: bold; 
     /* Smooth transition */
 }
 
+/* hovering over the menu changes the color*/ 
 .settings-list li a:hover{
     /*background-color: darkgray; */
     color: black;
 }
 
+/* when the setting is selected, the color is black */
 .settings-list li a.selected{
     color: black;
     font-weight: bold;
 }
 
+.settings-container {
+    position: relative;
+    /* Other styling as needed */
+}
 
+.settings-form .form-group button[type="submit"] {
+    position: absolute;
+    right: 10px;  /* Adjust as needed */
+    bottom: 10px; /* Adjust as needed */
+}
 
 
 

@@ -44,7 +44,7 @@
                 <ul class="settings-list">
                     <li><a href="#" id="account-settings-link" class="selected">Account</a></li>
                     <li><a href="#" id="password-settings-link" >Password</a></li>
-                    <li><a href="#" id="other-settings-link">Other</a></li>
+                    <li><a href="#" id="preferences-settings-link">AI Assistant</a></li>
                 </ul>
             
                 <!-- WHERE THE FORMS WILL DISPLAY -->
@@ -115,6 +115,19 @@
                         </div>
                     </form>
 
+                    <!----------------PREFERENCE SETTINGS FORM------------------------------------------>                  
+                    <form id="preferences-settings-form" class="settings-form">
+                        <!-- Save Previous Chats Checkbox -->
+                        <div class="form-group">
+                            <label for="save-chats">Save Previous Chats:</label>
+                            <input type="checkbox" id="save-chats" name="save-chats">
+                        </div>
+                    
+                        <!-- Submit Button -->
+                        <div class="form-group">
+                            <button type="submit">Save Preferences</button>
+                        </div>
+                    </form>
                 </div>
             </div>    
         </section>
@@ -136,6 +149,7 @@
                         });
                         document.getElementById(selectedLinkID).classList.add('selected');
                     }
+                    ///////////////////////////////////////////////////////////////////////////////////////
                     document.getElementById('account-settings-link').addEventListener('click', function() {
                         showForm('account-settings-form');
                         selectedLink('account-settings-link');
@@ -144,6 +158,11 @@
                     document.getElementById('password-settings-link').addEventListener('click', function() {
                         showForm('password-settings-form');
                         selectedLink('password-settings-link');
+                    });
+
+                    document.getElementById('preferences-settings-link').addEventListener('click', function() {
+                        showForm('preferences-settings-form');
+                        selectedLink('preferences-settings-link');
                     });
                     showForm('account-settings-form');
             });
