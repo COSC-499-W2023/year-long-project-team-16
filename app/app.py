@@ -4,7 +4,7 @@ import re
 import random
 import string
 from click import wrap_text
-from flask import Flask, jsonify, render_template, request, send_from_directory, url_for
+from flask import Flask, jsonify, render_template, request, send_from_directory, url_for, Response, send_file
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase.pdfmetrics import stringWidth
@@ -12,11 +12,18 @@ from flask_cors import CORS
 import openai 
 import matplotlib.pyplot as plt
 from io import BytesIO
+from pymongo import MongoClient
+from gridfs import GridFS
 
 
 
 app = Flask(__name__, template_folder='my_templates')
 CORS(app)
+
+# Setup MongoDB connection
+client = MongoClient('mongodb+srv://Remy:1234@cluster0.vgzdbrr.mongodb.net/')
+db = client['generated_pdfs']
+fs = GridFS(db)
 
 @app.route('/')
 def index():
@@ -141,6 +148,11 @@ def generate_pdf():
                 y_position -= line_height
 
     c.save()
+    
+     # Save the PDF to MongoDB
+    with open(pdf_path, 'rb') as f:
+        fs.put(f, filename=pdf_filename, content_type='application/pdf')
+
 
     # Respond with the URL of the PDF
     pdf_url = url_for('get_pdf', filename=pdf_filename)
@@ -155,6 +167,18 @@ def get_pdf(filename):
         return send_from_directory(directory, filename)
     else:
         return "File not found", 404
+  
+  #can be used to check if file is in database  
+@app.route('/check_file/<filename>', methods=['GET'])
+def check_file(filename):
+    try:
+        file = fs.get_last_version(filename=filename)
+        if file:
+            return jsonify(success=True, message="File exists in the database.")
+    except:
+        return jsonify(success=False, message="File does not exist in the database.")
+      
+    
 
 if __name__ == '__main__':
     app.debug = True
