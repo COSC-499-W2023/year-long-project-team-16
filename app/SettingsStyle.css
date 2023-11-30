@@ -86,10 +86,6 @@ header{
 .navbar a:hover{
     color: black;
 }
-
-
-
-
 .link_container a{
     
 }
@@ -320,10 +316,31 @@ button[type="submit"]:hover {
     flex: 1;
     
 }
+/* adjust this to move the form left or right */
 #settings-content {
-    flex: 4;   /* adjust this to move the form left or right */ 
+    flex: 4;    
 }
+
+/* HOVER EFFECTS    # for div || . for class */     
+
+
 .selected {
-    background-color: #f0f0f0;
+    color: black;
+    font-weight: bold; 
+    /* Smooth transition */
 }
+
+.settings-list li a:hover{
+    /*background-color: darkgray; */
+    color: black;
+}
+
+.settings-list li a.selected{
+    color: black;
+    font-weight: bold;
+}
+
+
+
+
 

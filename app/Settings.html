@@ -39,14 +39,12 @@
         <section class="settings">
             <h1> Settings </h1>
             <div class="settings-container">
-                <!-- Settings options list -->
+
+                <!-- LEFT HAND SIDE MENU BAR class="selected"-->
                 <ul class="settings-list">
-                    <li><a href="#" id="account-settings-link">Account</a></li>
-                    <!-- name / username, Password, profile picture, contact details, bio, whether content is public or private.-->
-                    <li><a href="#" id="password-settings-link">Password</a></li>
-                    <!-- Email notifications and such-->
-                    <li><a href="setting3.html">Preferences</a></li>
-                    <!-- dark mode and other visual changed (if added)-->
+                    <li><a href="#" id="account-settings-link" class="selected">Account</a></li>
+                    <li><a href="#" id="password-settings-link" >Password</a></li>
+                    <li><a href="#" id="other-settings-link">Other</a></li>
                 </ul>
             
                 <!-- WHERE THE FORMS WILL DISPLAY -->
@@ -64,7 +62,7 @@
                         <!-- Last Name -->
                         <div class="form-group">
                             <label for="name"> Last Name:</label>
-                            <input type="text" id="firstname" name="lastname">
+                            <input type="text" id="lastname" name="lastname">
                         </div>
                 
                         <!-- Username -->
@@ -132,14 +130,21 @@
                         document.getElementById(formID).style.display = 'block';
                     }
 
+                    function selectedLink(selectedLinkID){
+                        document.querySelectorAll('.settings-list a').forEach(function(link){
+                            link.classList.remove('selected');
+                        });
+                        document.getElementById(selectedLinkID).classList.add('selected');
+                    }
                     document.getElementById('account-settings-link').addEventListener('click', function() {
                         showForm('account-settings-form');
+                        selectedLink('account-settings-link');
                     });
 
                     document.getElementById('password-settings-link').addEventListener('click', function() {
                         showForm('password-settings-form');
+                        selectedLink('password-settings-link');
                     });
-
                     showForm('account-settings-form');
             });
         </script>
