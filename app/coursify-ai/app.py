@@ -25,6 +25,22 @@ client = MongoClient('mongodb+srv://Remy:1234@cluster0.vgzdbrr.mongodb.net/')
 db = client['generated_pdfs']
 fs = GridFS(db)
 
+@app.route('/content')
+def my_content():
+    # Get a list of all files in GridFS
+    files = fs.find()
+
+    # Create a list to store file data
+    file_data = []
+
+    # Loop through all files
+    for file in files:
+        # Get the file name and the file id (used to retrieve the file later)
+        file_data.append({"filename": file.filename, "_id": str(file._id)})
+
+    # Render a template and pass the file data to it
+    return render_template('content.html', file_data=file_data)
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -177,6 +193,8 @@ def check_file(filename):
             return jsonify(success=True, message="File exists in the database.")
     except:
         return jsonify(success=False, message="File does not exist in the database.")
+
+    
       
     
 

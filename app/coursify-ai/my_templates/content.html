@@ -43,54 +43,70 @@
     </header>
 
     <!-- My Content Section -->
+    <!-- <section id="my-content">
+      <div class="content-header">
+        <h1 id = "title">My Notes</h1>
+      </div>
+      <div class="notes-container"> -->
+        <!-- Note Cards -->
+        <!-- <div class="note-card">
+          <div class="note-title">Note Title 1</div>
+          <div class="note-summary">Brief summary of the note...</div>
+          <button class="download-btn">Download</button>
+        </div>
+        <div class="note-card">
+          <div class="note-title">Note Title 1</div>
+          <div class="note-summary">Brief summary of the note...</div>
+          <button class="download-btn">Download</button>
+        </div>
+        <div class="note-card">
+          <div class="note-title">Note Title 1</div>
+          <div class="note-summary">Brief summary of the note...</div>
+          <button class="download-btn">Download</button>
+        </div>
+        <div class="note-card">
+          <div class="note-title">Note Title 1</div>
+          <div class="note-summary">Brief summary of the note...</div>
+          <button class="download-btn">Download</button>
+        </div>
+        <div class="note-card">
+          <div class="note-title">Note Title 1</div>
+          <div class="note-summary">Brief summary of the note...</div>
+          <button class="download-btn">Download</button>
+        </div>
+        <div class="note-card">
+          <div class="note-title">Note Title 1</div>
+          <div class="note-summary">Brief summary of the note...</div>
+          <button class="download-btn">Download</button>
+        </div>
+        <div class="note-card">
+          <div class="note-title">Note Title 1</div>
+          <div class="note-summary">Brief summary of the note...</div>
+          <button class="download-btn">Download</button>
+        </div>
+        <div class="note-card">
+          <div class="note-title">Note Title 1</div>
+          <div class="note-summary">Brief summary of the note...</div>
+          <button class="download-btn">Download</button>
+        </div> -->
+        <!-- Repeat for more note cards -->
+        <!-- Add more cards as needed -->
+      <!-- </div>
+    </section> -->
+
     <section id="my-content">
       <div class="content-header">
         <h1 id = "title">My Notes</h1>
       </div>
       <div class="notes-container">
         <!-- Note Cards -->
+        {% for file in file_data %}
         <div class="note-card">
-          <div class="note-title">Note Title 1</div>
-          <div class="note-summary">Brief summary of the note...</div>
-          <button class="download-btn">Download</button>
+          <div class="note-title">{{ file.filename }}</div>
+          <div class="note-summary">Click download to view the PDF...</div>
+          <a href="{{ url_for('get_pdf', filename=file.filename) }}" class="download-btn">Download</a>
         </div>
-        <div class="note-card">
-          <div class="note-title">Note Title 1</div>
-          <div class="note-summary">Brief summary of the note...</div>
-          <button class="download-btn">Download</button>
-        </div>
-        <div class="note-card">
-          <div class="note-title">Note Title 1</div>
-          <div class="note-summary">Brief summary of the note...</div>
-          <button class="download-btn">Download</button>
-        </div>
-        <div class="note-card">
-          <div class="note-title">Note Title 1</div>
-          <div class="note-summary">Brief summary of the note...</div>
-          <button class="download-btn">Download</button>
-        </div>
-        <div class="note-card">
-          <div class="note-title">Note Title 1</div>
-          <div class="note-summary">Brief summary of the note...</div>
-          <button class="download-btn">Download</button>
-        </div>
-        <div class="note-card">
-          <div class="note-title">Note Title 1</div>
-          <div class="note-summary">Brief summary of the note...</div>
-          <button class="download-btn">Download</button>
-        </div>
-        <div class="note-card">
-          <div class="note-title">Note Title 1</div>
-          <div class="note-summary">Brief summary of the note...</div>
-          <button class="download-btn">Download</button>
-        </div>
-        <div class="note-card">
-          <div class="note-title">Note Title 1</div>
-          <div class="note-summary">Brief summary of the note...</div>
-          <button class="download-btn">Download</button>
-        </div>
-        <!-- Repeat for more note cards -->
-        <!-- Add more cards as needed -->
+        {% endfor %}
       </div>
     </section>
 
