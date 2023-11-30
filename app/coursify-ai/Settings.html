@@ -85,6 +85,8 @@
                         <div class="form-group">
                             <label for="profile-picture">Profile Picture:</label>
                             <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
+
+                            <img id="profile-picture-preview" src="#" alt="Profile Picture Preview" style="display: none;">
                         </div>
                 
                         <!-- Save Button --> 
@@ -178,6 +180,20 @@
                     document.getElementById('preferences-settings-link').addEventListener('click', function() {
                         showForm('preferences-settings-form');
                         selectedLink('preferences-settings-link');
+                    });
+
+                    //selects the HTML element with the ID "profile picture", which is the file input by the user.
+                    //Event listner looks for a change, then calls the function.
+                    document.getElementById('profile-picture').addEventListener('change', function(event){ 
+                        //constant for the file chosen by the user 
+                        const [file] = event.target.files;
+                        //if the file was selected
+                        if(file) {
+                            //points a temp URL to the file selected by the user.
+                            const preview = document.getElementById('profile-picture-preview');
+                            preview.src = URL.createObjectURL(file);
+                            preview.style.display = 'block';
+                        }
                     });
                     showForm('account-settings-form'); // show the Account Form by default when the page is open. 
             });

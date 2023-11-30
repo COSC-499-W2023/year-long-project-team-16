@@ -136,6 +136,7 @@ header{
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    margin-inline: 50px;
 }
 
 .form-group input[type="file"] {
@@ -277,7 +278,7 @@ button[type="submit"]:hover {
     font-size: 18px;
     font-weight:lighter;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     margin-bottom: 50px ;
 }
@@ -349,8 +350,8 @@ button[type="submit"]:hover {
 
 .settings-form .form-group button[type="submit"] {
     position: absolute;
-    right: 10px;  /* Adjust as needed */
-    bottom: 10px; /* Adjust as needed */
+    right: 10px;  
+    bottom: 10px; 
 }
 
 
