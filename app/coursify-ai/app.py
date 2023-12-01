@@ -24,8 +24,8 @@ CORS(app)
 app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'coursify@outlook.com'  # replace with your email
-app.config['MAIL_PASSWORD'] = 'Gunners4Eva.'  # replace with your password
+app.config['MAIL_USERNAME'] = 'coursify@outlook.com'  
+app.config['MAIL_PASSWORD'] = 'Gunners4Eva.' 
 
 mail = Mail(app)
 
@@ -79,7 +79,7 @@ def share_via_email():
 
     # Create a new email message
     msg = Message('Your Shared File',
-                  sender='coursify@outlook.com',  # replace with your email
+                  sender='coursify@outlook.com',
                   recipients=[recipient])
 
     # Add the shareable URL to the email body
