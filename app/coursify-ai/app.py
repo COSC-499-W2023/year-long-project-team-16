@@ -21,9 +21,9 @@ from bson.objectid import ObjectId
 app = Flask(__name__, template_folder='my_templates')
 CORS(app)
 
-app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com'
+app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com' #we use outlook because gmail was wasting time
 app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USE_TLS'] = True 
 app.config['MAIL_USERNAME'] = 'coursify@outlook.com'  
 app.config['MAIL_PASSWORD'] = 'Gunners4Eva.' 
 
