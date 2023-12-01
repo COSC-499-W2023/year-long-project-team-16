@@ -4,7 +4,7 @@ import re
 import random
 import string
 from click import wrap_text
-from flask import Flask, jsonify, render_template, request, send_from_directory, url_for, Response, send_file
+from flask import Flask, jsonify, render_template, request, send_from_directory, url_for, Response, send_file, make_response
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase.pdfmetrics import stringWidth
@@ -14,17 +14,44 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 from pymongo import MongoClient
 from gridfs import GridFS
-
+from flask_mail import Mail, Message
+from bson.objectid import ObjectId
 
 
 app = Flask(__name__, template_folder='my_templates')
 CORS(app)
+
+app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'coursify@outlook.com'  # replace with your email
+app.config['MAIL_PASSWORD'] = 'Gunners4Eva.'  # replace with your password
+
+mail = Mail(app)
 
 # Setup MongoDB connection
 client = MongoClient('mongodb+srv://Remy:1234@cluster0.vgzdbrr.mongodb.net/')
 db = client['generated_pdfs']
 fs = GridFS(db)
 
+@app.route('/share/<file_id>')
+def share_file(file_id):
+    # converts id to objectid
+    file_id = ObjectId(file_id)
+
+    # Retrieve the file from GridFS
+    file = fs.get(file_id)
+
+    # Create a response with the file data
+    response = make_response(file.read())
+    response.mimetype = 'application/pdf'
+
+    # Set the Content-Disposition header to make the file downloadable
+    response.headers.set('Content-Disposition', 'attachment', filename=file.filename)
+
+    return response
+
+#transfers the files to the content page
 @app.route('/content')
 def my_content():
     # Get a list of all files in GridFS
@@ -40,6 +67,28 @@ def my_content():
 
     # Render a template and pass the file data to it
     return render_template('content.html', file_data=file_data)
+
+@app.route('/share_via_email', methods=['POST'])
+def share_via_email():
+    # Get the recipient's email address and the file id from the form data
+    recipient = request.form.get('email')
+    file_id = request.form.get('file_id')
+
+    # Generate the shareable URL
+    share_url = url_for('share_file', file_id=file_id, _external=True)
+
+    # Create a new email message
+    msg = Message('Your Shared File',
+                  sender='coursify@outlook.com',  # replace with your email
+                  recipients=[recipient])
+
+    # Add the shareable URL to the email body
+    msg.body = f'Here is the file you requested: {share_url}'
+
+    # Send the email
+    mail.send(msg)
+
+    return 'Email sent!' 
 
 @app.route('/')
 def index():
@@ -177,12 +226,14 @@ def generate_pdf():
 
 @app.route('/pdf/<filename>')
 def get_pdf(filename):
-    directory = os.path.join(os.getcwd(), 'pdfs')   
-    file_path = os.path.join(directory, filename)
-    if os.path.exists(file_path):
-        return send_from_directory(directory, filename)
-    else:
-        return "File not found", 404
+     directory = os.path.join(os.getcwd(), 'pdfs')   
+     file_path = os.path.join(directory, filename)
+     if os.path.exists(file_path):
+         return send_from_directory(directory, filename)
+     else:
+         return "File not found", 404
+
+    
   
   #can be used to check if file is in database  
 @app.route('/check_file/<filename>', methods=['GET'])
@@ -193,11 +244,9 @@ def check_file(filename):
             return jsonify(success=True, message="File exists in the database.")
     except:
         return jsonify(success=False, message="File does not exist in the database.")
-
     
-      
+   
     
-
 if __name__ == '__main__':
     app.debug = True
     app.run()

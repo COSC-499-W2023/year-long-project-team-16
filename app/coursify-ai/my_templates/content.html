@@ -105,10 +105,32 @@
           <div class="note-title">{{ file.filename }}</div>
           <div class="note-summary">Click download to view the PDF...</div>
           <a href="{{ url_for('get_pdf', filename=file.filename) }}" class="download-btn">Download</a>
-        </div>
-        {% endfor %}
-      </div>
-    </section>
+          <!-- Share Button -->
+      <button onclick="showForm('{{ file._id }}')" class="share-btn">Share</button>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- Share Form -->
+<div id="shareForm" style="display: none;">
+  <form action="{{ url_for('share_via_email') }}" method="post">
+    <input type="hidden" id="fileId" name="file_id">
+    <label for="email">Recipient's Email:</label>
+    <input type="email" id="email" name="email" required>
+    <input type="submit" value="Share">
+  </form>
+</div>
+
+<script>
+function showForm(fileId) {
+  // Set the file id in the form
+  document.getElementById('fileId').value = fileId;
+
+  // Show the form
+  document.getElementById('shareForm').style.display = 'block';
+}
+</script>
 
     <footer id="footer">&copy; 2023 CoursifyAI. All rights reserved.</footer>
   </body>
