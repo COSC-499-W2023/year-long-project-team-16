@@ -16,7 +16,8 @@ from pymongo import MongoClient
 from gridfs import GridFS
 from PyPDF2 import PdfReader
 from werkzeug.utils import secure_filename
-
+from flask_mail import Mail,Message
+from bson.objectid import ObjectId
 
 
 
@@ -35,6 +36,23 @@ mail = Mail(app)
 client = MongoClient('mongodb+srv://Remy:1234@cluster0.vgzdbrr.mongodb.net/')
 db = client['generated_pdfs']
 fs = GridFS(db)
+
+@app.route('/share/<file_id>')
+def share_file(file_id):
+    # converts id to objectid
+    file_id = ObjectId(file_id)
+
+    # Retrieve the file from GridFS
+    file = fs.get(file_id)
+
+    # Create a response with the file data
+    response = make_response(file.read())
+    response.mimetype = 'application/pdf'
+
+    # Set the Content-Disposition header to make the file downloadable
+    response.headers.set('Content-Disposition', 'attachment', filename=file.filename)
+
+    return response
 
 
 def extract_text_from_pdf(pdf_path):
@@ -159,6 +177,7 @@ def generate_pdf():
     # Process form data
     length = request.form.get('length', type=int, default=100)
     prompt = request.form.get('topics', default='')
+    difficulty = request.form.get('difficulty',default='')
 
     # Process optional PDF upload
     pdf_upload = request.files.get('pdf-upload')
