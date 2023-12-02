@@ -14,6 +14,9 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 from pymongo import MongoClient
 from gridfs import GridFS
+from PyPDF2 import PdfReader
+from werkzeug.utils import secure_filename
+
 
 
 
@@ -24,6 +27,16 @@ CORS(app)
 client = MongoClient('mongodb+srv://Remy:1234@cluster0.vgzdbrr.mongodb.net/')
 db = client['generated_pdfs']
 fs = GridFS(db)
+
+
+def extract_text_from_pdf(pdf_path):
+    # This function extracts text from a PDF using PdfReader
+    with open(pdf_path, 'rb') as f:
+        reader = PdfReader(f)
+        text = ""
+        for page in reader.pages:
+            text += page.extract_text()
+    return text
 
 @app.route('/content')
 def my_content():
@@ -117,7 +130,19 @@ def generate_pdf():
     length = request.form.get('length', type=int, default=100)
     prompt = request.form.get('topics', default='')
 
-    pdf_basename = sanitize_filename(prompt)
+    # Process optional PDF upload
+    pdf_upload = request.files.get('pdf-upload')
+    uploaded_text = ""
+
+    if pdf_upload and pdf_upload.filename:
+        pdf_path = os.path.join(pdf_directory, secure_filename(pdf_upload.filename))
+        pdf_upload.save(pdf_path)
+        uploaded_text = extract_text_from_pdf(pdf_path)
+
+        # Combine uploaded text with user's topics
+    combined_prompt = uploaded_text + "\n" + prompt
+
+    pdf_basename = sanitize_filename(combined_prompt)
 
     # Ensure the filename is not empty
     pdf_basename = pdf_basename if pdf_basename else 'generated_file'
@@ -135,6 +160,8 @@ def generate_pdf():
         max_tokens=1000
     )
     generated_text = response.choices[0].text.strip()
+
+    
 
     # Define font properties and margins
     font_name = "Helvetica"
