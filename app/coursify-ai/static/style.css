@@ -283,7 +283,7 @@ button[type="submit"]:hover {
 
 
 
-.content-header {
+/* .content-header {
     text-align: center;
     margin-bottom: 2rem;
 }
@@ -291,7 +291,19 @@ button[type="submit"]:hover {
 .content-header h1 {
     font-size: 3rem;
     margin-bottom: 0.5rem;
-}
+} */
+
+.content-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #fff;
+    padding: 10px 0;
+  }
+  
+  .content-header h1 {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -300,7 +312,7 @@ button[type="submit"]:hover {
     }
 }
 
-.notes-container {
+/* .notes-container {
     border: 2px solid #ddd;
     padding: 1rem;
     margin: 1rem auto;
@@ -347,4 +359,106 @@ button[type="submit"]:hover {
 
 .download-btn:hover {
     background-color: #45a049;
-}
+} */
+  
+.notes-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border: 2px solid #ddd;
+    padding: 1rem;
+    margin: 1rem auto;
+    max-width: 800px;
+    background-color: #f8f8f8;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .note-card {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    width: calc(33.333% - 20px);
+    padding: 15px;
+  }
+  
+  .note-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #000000;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  .note-summary {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  .download-btn, .share-btn {
+    display: inline-block;
+    background-color: #333;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  
+  .download-btn:hover {
+    background-color: #555555;
+  }
+  
+  .share-btn:hover {
+    background-color: #555555;
+  } 
+  #shareForm {
+    background-color: #fff;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    width: 300px; /* Adjust as needed */
+    margin: 0 auto;
+  }
+  
+  #shareForm form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #shareForm label {
+    margin-bottom: 10px;
+  }
+  
+  #shareForm input[type="email"] {
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+  }
+  
+  #shareForm input[type="submit"] {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  #shareForm input[type="submit"]:hover {
+    background-color: #555555;
+  }
+  
