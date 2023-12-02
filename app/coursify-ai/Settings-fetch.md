@@ -13,4 +13,4 @@ BACK END SETUP
      - can use the connect function on server.js once the integration is done.
      - close the connection
 
-   - Figure out Bolu's ways
+

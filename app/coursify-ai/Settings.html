@@ -32,7 +32,7 @@
                     <a href="">LOGOUT</a>
                 </nav>
             </div>
-            <!-- <i class='bx bx-menu'></i> -->
+            
 
         </header>
 
@@ -85,8 +85,11 @@
                         <div class="form-group">
                             <label for="profile-picture">Profile Picture:</label>
                             <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
+                            <!-- frame for the picture-->
 
-                            <img id="profile-picture-preview" src="#" alt="Profile Picture Preview" style="display: none;">
+                            <div id="image-preview-frame">
+                                <img id="profile-picture-preview" src="#" alt="Profile Picture Preview">
+                            </div>
                         </div>
                 
                         <!-- Save Button --> 
@@ -195,6 +198,7 @@
                             preview.style.display = 'block';
                         }
                     });
+
                     showForm('account-settings-form'); // show the Account Form by default when the page is open. 
             });
         </script>
