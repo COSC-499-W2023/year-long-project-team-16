@@ -419,7 +419,7 @@ button[type="submit"]:hover {
     background-color: #555555;
   }
   
-  .share-btn:hover {
+  #share-btn:hover {
     background-color: #555555;
   } 
   #shareForm {
@@ -439,6 +439,8 @@ button[type="submit"]:hover {
   
   #shareForm label {
     margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #333; 
   }
   
   #shareForm input[type="email"] {
