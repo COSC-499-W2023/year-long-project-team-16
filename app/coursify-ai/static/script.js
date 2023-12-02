@@ -49,3 +49,6 @@ document.addEventListener('DOMContentLoaded', function(){
     document.getElementById('password').value = password;
     document.getElementById('bio').value = bio;
 });
+
+
+
