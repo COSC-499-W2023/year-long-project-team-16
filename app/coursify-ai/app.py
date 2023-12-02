@@ -14,15 +14,10 @@ import matplotlib.pyplot as plt
 from io import BytesIO
 from pymongo import MongoClient
 from gridfs import GridFS
-<<<<<<< HEAD
 from PyPDF2 import PdfReader
 from werkzeug.utils import secure_filename
 
 
-=======
-from flask_mail import Mail, Message
-from bson.objectid import ObjectId
->>>>>>> 18108b1d0499e05eb6616bef92a6af3d04337f8e
 
 
 app = Flask(__name__, template_folder='my_templates')
@@ -41,7 +36,6 @@ client = MongoClient('mongodb+srv://Remy:1234@cluster0.vgzdbrr.mongodb.net/')
 db = client['generated_pdfs']
 fs = GridFS(db)
 
-<<<<<<< HEAD
 
 def extract_text_from_pdf(pdf_path):
     # This function extracts text from a PDF using PdfReader
@@ -52,26 +46,6 @@ def extract_text_from_pdf(pdf_path):
             text += page.extract_text()
     return text
 
-=======
-@app.route('/share/<file_id>')
-def share_file(file_id):
-    # converts id to objectid
-    file_id = ObjectId(file_id)
-
-    # Retrieve the file from GridFS
-    file = fs.get(file_id)
-
-    # Create a response with the file data
-    response = make_response(file.read())
-    response.mimetype = 'application/pdf'
-
-    # Set the Content-Disposition header to make the file downloadable
-    response.headers.set('Content-Disposition', 'attachment', filename=file.filename)
-
-    return response
-
-#transfers the files to the content page
->>>>>>> 18108b1d0499e05eb6616bef92a6af3d04337f8e
 @app.route('/content')
 def my_content():
     # Get a list of all files in GridFS
