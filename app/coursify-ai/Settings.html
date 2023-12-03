@@ -107,50 +107,38 @@
             </div>
           </form>
 
-                    <!-- ACCOUNT SETTINGS FROM ------------------------------------------------------------------------->
-                    <!-------------------------------------------------------------------------------------------------->
-                    <form id="account-settings-form" class="settings-form">
-                        <!-- First Name -->
-                        <div class="form-group">
-                            <label for="firstname">First Name :</label>
-                            <input type="text" id="firstname" name="firstname" value="{{user.get('first_name', '')}}"> 
-                        </div>
+          <!-- PASSWORD SETTINGS FROM ----------------------------------------------------------------------------->
+          <!------------------------------------------------------------------------------------------------------->
+          <form
+            id="password-settings-form"
+            class="settings-form"
+            style="display: none"
+          >
+            <!-- Current password -->
+            <div class="form-group">
+              <label for="current-password">Current Password:</label>
+              <input
+                type="password"
+                id="current-password"
+                name="current-password"
+              />
+            </div>
 
-                        <!-- Last Name -->
-                        <div class="form-group">
-                            <label for="lastname"> Last Name :</label>
-                            <input type="text" id="lastname" name="lastname" value="{{user.get('last_name', '')}}">
-                        </div>
-                
-                        <!-- Username -->
-                        <div class="form-group">
-                            <label for="username"> ID : </label>
-                            <input type="text" id="username" name="username" value="{{user.get('_id', '')}}">
-                        </div>
-                
-                        <!-- Email -->
-                        <div class="form-group">
-                            <label for="email">Email :</label>
-                            <input type="email" id="email" name="email" value="{{user.get('email', '')}}"> 
-                        </div>
-                
-                        <!-- Profile Picture Upload-->
-                        <div class="form-group">
-                            <label for="profile-picture">Profile Picture :</label>
-                            <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
-                            <!-- frame for the picture-->
+            <!-- New Password -->
+            <div class="form-group">
+              <label for="new-password">New Password:</label>
+              <input type="password" id="new-password" name="new-password" />
+            </div>
 
-                            <div id="image-preview-frame">
-                                <img id="profile-picture-preview" src="{{ user.get('profile_picture_url', '') }}" alt="Profile Picture Preview">
-                                <div id="no-image-text" {% if user.get('profile_picture_url') %} style="display: none;"{% endif %}>No profile picture uploaded</div>
-                            </div>
-                        </div>
-                
-                        <!-- Save Button --> 
-                        <div class="form-group">
-                            <button type="submit">Save Changes</button>
-                        </div>
-                    </form>
+            <!-- Confirm New Password -->
+            <div class="form-group">
+              <label for="confirm-new-password">Confirm New Password:</label>
+              <input
+                type="password"
+                id="confirm-new-password"
+                name="confirm-new-password"
+              />
+            </div>
 
             <!-- Save changes button -->
             <div class="form-group">
