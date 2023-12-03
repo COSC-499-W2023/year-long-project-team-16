@@ -47,11 +47,19 @@ async function connectToDB() {
         return dbInstance;
     }
 
-    const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology:true});
-    await client.conenct();
-    dbInstance = client.db();
+    try{
+        const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology:true});
+        await client.connect();
+        dbInstance = client.db();
 
-    return dbInstance;
+        console.log("successfully connected to MongoDB.");
+
+        return dbInstance;
+
+    }catch (error) {
+        console.error("connection to MongoDB failed: ", error);
+        throw error;
+    }
 }
 
-module.exports = connectToDatabase;
+module.exports = connectToDB;
