@@ -31,9 +31,53 @@
                     <a href="ai.html">AI ASSISTANT</a>
                     <a href="">LOGOUT</a>
                 </nav>
+      <!-- Rest of the header -->
+      <div class="link_container">
+        <nav class="navbar">
+          <a href="{{ url_for('index') }}">HOME</a>
+          <a href="{{ url_for('content') }}">MY CONTENT</a>
+          <a href="{{ url_for('settings_html') }}">SETTINGS</a>
+          <a href="{{ url_for('ai_html') }}">AI ASSISTANT</a>
+          <a href="">LOGOUT</a>
+        </nav>
+      </div>
+    </header>
+
+    <section class="settings">
+      <h1>Settings</h1>
+      <div class="settings-container">
+        <!----------------------- LEFT HAND SIDE MENU BAR ------------------------------------------------>
+        <!------------------------------------------------------------------------------------------------>
+
+        <ul class="settings-list">
+          <li>
+            <a href="#" id="account-settings-link" class="selected">Account</a>
+          </li>
+          <li><a href="#" id="password-settings-link">Password</a></li>
+          <li><a href="#" id="preferences-settings-link">AI Assistant</a></li>
+        </ul>
+
+        <!--------------------------- Div WHERE THE FORMS WILL DISPLAY ------------------------------------->
+        <!-------------------- THE ACCOUNT SETTINGS PAGE IS DISPLAYED BY DEFAULT --------------------------->
+
+        <div id="settings-content">
+          <!-- ACCOUNT SETTINGS FROM ------------------------------------------------------------------------->
+          <!-------------------------------------------------------------------------------------------------->
+          <form id="account-settings-form" class="settings-form">
+            <!-- First Name -->
+            <div class="form-group">
+              <label for="firstname">First Name :</label>
+              <input type="text" id="firstname" name="firstname" />
+            </div>
+
+            <!-- Last Name -->
+            <div class="form-group">
+              <label for="lastname"> Last Name :</label>
+              <input type="text" id="lastname" name="lastname" />
             </div>
             
 
+<<<<<<< HEAD
         </header>
 
         <section class="settings">
@@ -42,6 +86,40 @@
 
                 <!----------------------- LEFT HAND SIDE MENU BAR ------------------------------------------------>
                 <!------------------------------------------------------------------------------------------------>
+=======
+            <!-- Username -->
+            <div class="form-group">
+              <label for="username"> ID : </label>
+              <input type="text" id="username" name="username" />
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label for="email">Email :</label>
+              <input type="email" id="email" name="email" />
+            </div>
+
+            <!-- Profile Picture Upload-->
+            <div class="form-group">
+              <label for="profile-picture">Profile Picture :</label>
+              <input
+                type="file"
+                id="profile-picture"
+                name="profile-picture"
+                accept="image/*"
+              />
+              <!-- frame for the picture-->
+
+              <div id="image-preview-frame">
+                <img
+                  id="profile-picture-preview"
+                  src="#"
+                  alt="Profile Picture Preview"
+                />
+                <div id="no-image-text">No profile picture uploaded</div>
+              </div>
+            </div>
+>>>>>>> refs/remotes/origin/DashboardHome
 
                 <ul class="settings-list">
                     <li><a href="#" id="account-settings-link" class="selected">Account</a></li>
@@ -52,7 +130,26 @@
                 <!--------------------------- Div WHERE THE FORMS WILL DISPLAY ------------------------------------->
                 <!-------------------- THE ACCOUNT SETTINGS PAGE IS DISPLAYED BY DEFAULT --------------------------->
 
+<<<<<<< HEAD
                 <div id="settings-content">
+=======
+          <!-- PASSWORD SETTINGS FROM ----------------------------------------------------------------------------->
+          <!------------------------------------------------------------------------------------------------------->
+          <form
+            id="password-settings-form"
+            class="settings-form"
+            style="display: none"
+          >
+            <!-- Current password -->
+            <div class="form-group">
+              <label for="current-password">Current Password:</label>
+              <input
+                type="password"
+                id="current-password"
+                name="current-password"
+              />
+            </div>
+>>>>>>> refs/remotes/origin/DashboardHome
 
                     <!-- ACCOUNT SETTINGS FROM ------------------------------------------------------------------------->
                     <!-------------------------------------------------------------------------------------------------->
