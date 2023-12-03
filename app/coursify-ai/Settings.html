@@ -13,28 +13,23 @@
     />
 
     <!--Relationship of this sheet and the link-->
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='SettingsStyle.css') }}"
-    />
+    <link rel="stylesheet" href="SettingsStyle.css" />
   </head>
   <body>
     <!--header design-->
     <header class="header">
       <!-- Click the logo to go back to the home page -->
       <div class="link_container">
-        <a href="{{ url_for('index') }}"
-          ><img src="{{ url_for('static', filename='cap_logo1.png') }}"
-        /></a>
+        <a href="index.html"><img src="cap_logo1.png" /></a>
       </div>
 
       <!-- Rest of the header -->
       <div class="link_container">
         <nav class="navbar">
-          <a href="{{ url_for('index') }}">HOME</a>
-          <a href="{{ url_for('content') }}">MY CONTENT</a>
-          <a href="{{ url_for('settings_html') }}">SETTINGS</a>
-          <a href="{{ url_for('ai_html') }}">AI ASSISTANT</a>
+          <a href="index.html">HOME</a>
+          <a href="content.html">MY CONTENT</a>
+          <a href="Settings.html">SETTINGS</a>
+          <a href="ai.html">AI ASSISTANT</a>
           <a href="">LOGOUT</a>
         </nav>
       </div>
