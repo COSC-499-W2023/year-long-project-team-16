@@ -50,7 +50,7 @@ async function connectToDB() {
     try{
         const client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology:true});
         await client.connect();
-        dbInstance = client.db();
+        dbInstance = client.db("Login_details");
 
         console.log("successfully connected to MongoDB.");
 
