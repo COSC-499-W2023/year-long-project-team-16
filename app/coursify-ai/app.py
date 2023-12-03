@@ -1,10 +1,11 @@
+from flask import flash
 from datetime import datetime
 import os
 import re
 import random
 import string
 from click import wrap_text
-from flask import Flask, jsonify, render_template, request, send_from_directory, url_for, Response, send_file, make_response
+from flask import Flask, jsonify, render_template, request, send_from_directory, url_for, Response, send_file, make_response, redirect
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfbase.pdfmetrics import stringWidth
@@ -19,10 +20,22 @@ from werkzeug.utils import secure_filename
 from flask_mail import Mail,Message
 from bson.objectid import ObjectId
 
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+from flask_mail import Mail, Message
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
+# Other imports...
 
 
 app = Flask(__name__, template_folder='my_templates')
 CORS(app)
+bcrypt = Bcrypt(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
 
 app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com' #we use outlook because gmail was wasting time
 app.config['MAIL_PORT'] = 587
@@ -30,12 +43,145 @@ app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'coursify@outlook.com'  
 app.config['MAIL_PASSWORD'] = 'Gunners4Eva.' 
 
+app.secret_key = 'coursifyai1234'
+
+serializer = URLSafeTimedSerializer(app.secret_key)
+
+
 mail = Mail(app)
 
 # Setup MongoDB connection
 client = MongoClient('mongodb+srv://Remy:1234@cluster0.vgzdbrr.mongodb.net/')
 db = client['generated_pdfs']
+db2=client['Login_details']
 fs = GridFS(db)
+users_collection=db2.users
+
+
+# User model
+class User(UserMixin):
+    def __init__(self, user_id, email):
+        self.user_id = str(user_id)
+        self.email = email
+
+    def get_id(self):
+        return self.user_id
+
+# User Loader
+@login_manager.user_loader
+def load_user(user_id):
+    user = users_collection.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        return None
+    return User(user_id=user["_id"], email=user["email"])
+
+    # Registration Route
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm_password')
+
+        if password != confirm_password:
+            flash('Passwords do not match!')
+            return redirect(url_for('register'))
+
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+        # Save user to MongoDB
+        user_id = users_collection.insert_one({
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
+            "password": hashed_password,
+            "verified": False
+        }).inserted_id
+
+        # Generate a token
+        token = serializer.dumps(email, salt='email-confirmation-salt')
+
+        # Send verification email
+        confirm_url = url_for('confirm_email', token=token, _external=True)
+        html = render_template('activate.html', confirm_url=confirm_url)  # Create an HTML template for the email
+        subject = "Please confirm your email"
+        send_email(email, subject, html)
+
+        flash('A confirmation email has been sent.', 'success')
+        return redirect(url_for('login'))
+    return render_template('register.html')
+
+# Send Email Function
+def send_email(to, subject, template):
+    msg = Message(
+        subject,
+        recipients=[to],
+        html=template,
+        sender=app.config['MAIL_USERNAME']
+    )
+    mail.send(msg)
+
+# Email Confirmation Route
+@app.route('/confirm/<token>')
+def confirm_email(token):
+    try:
+        email = serializer.loads(
+            token, 
+            salt='email-confirmation-salt', 
+            max_age=3600  # Token expires after 1 hour
+        )
+    except (SignatureExpired, BadSignature):
+        flash('The confirmation link is invalid or has expired.', 'danger')
+        return redirect(url_for('index'))
+
+    user = users_collection.find_one({"email": email})
+    if user and not user['verified']:
+        users_collection.update_one({"_id": user['_id']}, {"$set": {"verified": True}})
+        flash('Your account has been activated!', 'success')
+    else:
+        flash('Account already activated or not found.', 'success')
+    return redirect(url_for('login'))
+
+# Login Route
+# Updated Login Route with "Remember Me"
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = request.form['password']
+        remember = 'remember' in request.form  # Check if 'Remember Me' is checked
+
+        user = users_collection.find_one({"email": email})
+        if user and bcrypt.check_password_hash(user['password'], password):
+            user_obj = User(user_id=user["_id"], email=email)
+            login_user(user_obj, remember=remember)
+            return redirect(url_for('index'))
+
+        flash('Invalid credentials. Please try again.')
+
+    return render_template('login.html')
+
+
+# Logout Route
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+    @app.route('/settings')
+    @login_required
+    def settings():
+     user_id = current_user.get_id()
+     user = users_collection.find_one({"_id": ObjectId(user_id)})
+     if user:
+        return render_template('settings.html', user=user)
+     else:
+        flash("User not found.")
+        return redirect(url_for('index'))
+
 
 @app.route('/share/<file_id>')
 def share_file(file_id):
@@ -103,6 +249,7 @@ def share_via_email():
     return 'Email sent!' 
 
 @app.route('/')
+@login_required
 def index():
     return render_template('index.html')
 
