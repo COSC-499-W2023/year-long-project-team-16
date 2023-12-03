@@ -152,7 +152,7 @@
 
         <script> 
             //DOMContent - sets up an event listner that waits for the entire HTML document to be fully loaded before running the fucntion
-            document.addEventListener('DOMContentLoaded', function(){
+            document.addEventListener('DOMContentLoaded', async function(){
                     //This function first hides all of the forms inside of setting-form class by setting the display to none.
                     function showForm(formID) {
                         document.querySelectorAll('.settings-form').forEach(function(form){
@@ -201,6 +201,40 @@
                         }
                     });
 
+                    // Fetching user data
+                    async function fetchUserData(){
+                        try{
+                            const token = localStorage.getItem('jwt');
+                            if(!token){
+                                throw new Error('no JWT found');
+                            }
+                            const response = await fetch ('/api/user/data',{
+                                headers:{
+                                    'Authorization': `Bearer ${token}`
+                                }
+                            });
+                            if(!response.ok){
+                                throw new Error(`HTTP error! status: ${response.status}`);
+                            }
+                            const data = await response.json();
+                            return data;
+                        } catch (error){
+                            console.error("Could not fetch user data: ", error)
+                        }
+
+                    }
+
+                    // Function to populate the settings form with fetched user data
+                    function populateSettingsForm(userData){
+                        document.getElementById('firstname').value = userData.firstName || '';
+                        document.getElementById('lastname').value = userData.lastName || '';
+                        document.getElementById('email').value = userData.email || '';
+                    }
+
+                    const userData = await fetchUserData();
+                    if (userData){
+                        populateSettingsForm(userData);
+                    }
 
                     showForm('account-settings-form'); // show the Account Form by default when the page is open. 
             });
