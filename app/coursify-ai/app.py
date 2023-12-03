@@ -112,7 +112,7 @@ def content():
 
 
 @app.route('/settings.html')
-def settings_html():
+def settings_html():  
     return render_template('settings.html')
 
 
