@@ -60,25 +60,25 @@
                         <!-- First Name -->
                         <div class="form-group">
                             <label for="firstname">First Name :</label>
-                            <input type="text" id="firstname" name="firstname">
+                            <input type="text" id="firstname" name="firstname" value="{{user.get('first_name', '')}}"> 
                         </div>
 
                         <!-- Last Name -->
                         <div class="form-group">
                             <label for="lastname"> Last Name :</label>
-                            <input type="text" id="lastname" name="lastname">
+                            <input type="text" id="lastname" name="lastname" value="{{user.get('last_name', '')}}">
                         </div>
                 
                         <!-- Username -->
                         <div class="form-group">
                             <label for="username"> ID : </label>
-                            <input type="text" id="username" name="username">
+                            <input type="text" id="username" name="username" value="{{user.get('_id', '')}}">
                         </div>
                 
                         <!-- Email -->
                         <div class="form-group">
                             <label for="email">Email :</label>
-                            <input type="email" id="email" name="email">
+                            <input type="email" id="email" name="email" value="{{user.get('email', '')}}"> 
                         </div>
                 
                         <!-- Profile Picture Upload-->
@@ -88,8 +88,8 @@
                             <!-- frame for the picture-->
 
                             <div id="image-preview-frame">
-                                <img id="profile-picture-preview" src="#" alt="Profile Picture Preview">
-                                <div id="no-image-text">No profile picture uploaded</div>
+                                <img id="profile-picture-preview" src="{{ user.get('profile_picture_url', '') }}" alt="Profile Picture Preview">
+                                <div id="no-image-text" {% if user.get('profile_picture_url') %} style="display: none;"{% endif %}>No profile picture uploaded</div>
                             </div>
                         </div>
                 
