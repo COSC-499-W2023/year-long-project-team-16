@@ -171,9 +171,9 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-    @app.route('/settings')
-    @login_required
-    def settings():
+@app.route('/settings')
+@login_required
+def settings():
      user_id = current_user.get_id()
      user = users_collection.find_one({"_id": ObjectId(user_id)})
      if user:
