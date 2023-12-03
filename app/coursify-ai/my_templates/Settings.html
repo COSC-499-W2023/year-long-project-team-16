@@ -38,59 +38,72 @@
           <a href="">LOGOUT</a>
         </nav>
       </div>
-      <!-- <i class='bx bx-menu'></i> -->
     </header>
 
     <section class="settings">
       <h1>Settings</h1>
       <div class="settings-container">
-        <!-- LEFT HAND SIDE MENU BAR class="selected"-->
+        <!----------------------- LEFT HAND SIDE MENU BAR ------------------------------------------------>
+        <!------------------------------------------------------------------------------------------------>
+
         <ul class="settings-list">
           <li>
             <a href="#" id="account-settings-link" class="selected">Account</a>
           </li>
           <li><a href="#" id="password-settings-link">Password</a></li>
-          <li><a href="#" id="other-settings-link">Other</a></li>
+          <li><a href="#" id="preferences-settings-link">AI Assistant</a></li>
         </ul>
 
-        <!-- WHERE THE FORMS WILL DISPLAY -->
-        <!-- THE ACCOUNT SETTINGS PAGE IS DISPLAYED BY DEFAULT -->
+        <!--------------------------- Div WHERE THE FORMS WILL DISPLAY ------------------------------------->
+        <!-------------------- THE ACCOUNT SETTINGS PAGE IS DISPLAYED BY DEFAULT --------------------------->
+
         <div id="settings-content">
-          <!-- ACCOUNT SETTINGS FROM ---------------------------------->
+          <!-- ACCOUNT SETTINGS FROM ------------------------------------------------------------------------->
+          <!-------------------------------------------------------------------------------------------------->
           <form id="account-settings-form" class="settings-form">
             <!-- First Name -->
             <div class="form-group">
-              <label for="name">First Name:</label>
-              <input type="text" id="firstname" name="lastname" />
+              <label for="firstname">First Name :</label>
+              <input type="text" id="firstname" name="firstname" />
             </div>
 
             <!-- Last Name -->
             <div class="form-group">
-              <label for="name"> Last Name:</label>
+              <label for="lastname"> Last Name :</label>
               <input type="text" id="lastname" name="lastname" />
             </div>
 
             <!-- Username -->
             <div class="form-group">
-              <label for="username"> Username: </label>
+              <label for="username"> ID : </label>
               <input type="text" id="username" name="username" />
             </div>
 
             <!-- Email -->
             <div class="form-group">
-              <label for="email">Email:</label>
+              <label for="email">Email :</label>
               <input type="email" id="email" name="email" />
             </div>
 
             <!-- Profile Picture Upload-->
             <div class="form-group">
-              <label for="profile-picture">Profile Picture:</label>
+              <label for="profile-picture">Profile Picture :</label>
               <input
                 type="file"
                 id="profile-picture"
                 name="profile-picture"
                 accept="image/*"
               />
+              <!-- frame for the picture-->
+
+              <div id="image-preview-frame">
+                <img
+                  id="profile-picture-preview"
+                  src="#"
+                  alt="Profile Picture Preview"
+                />
+                <div id="no-image-text">No profile picture uploaded</div>
+              </div>
             </div>
 
             <!-- Save Button -->
@@ -99,7 +112,8 @@
             </div>
           </form>
 
-          <!-- PASSWORD SETTINGS FROM ------------------------------------------------------>
+          <!-- PASSWORD SETTINGS FROM ----------------------------------------------------------------------------->
+          <!------------------------------------------------------------------------------------------------------->
           <form
             id="password-settings-form"
             class="settings-form"
@@ -136,29 +150,54 @@
               <button type="submit">Save Changes</button>
             </div>
           </form>
+
+          <!----------------PREFERENCE SETTINGS FORM----------------------------------------------------------------->
+          <!------------------------------------------------------------------------------------------------------->
+          <form id="preferences-settings-form" class="settings-form">
+            <!-- Save Previous Chats Checkbox -->
+            <div class="form-group">
+              <label for="save-chats">Save Previous Chats:</label>
+              <input type="checkbox" id="save-chats" name="save-chats" />
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+              <button type="submit">Save Preferences</button>
+            </div>
+          </form>
+
+          <!--------------------- END OF FORMS -------------------------------------------------------------------->
+          <!------------------------------------------------------------------------------------------------------->
         </div>
       </div>
     </section>
 
+    <!-------------------------------------SCRIPT-------------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------->
+
     <script>
-      //DOMContent - waiting till the page is fully loaded
-      document.addEventListener("DOMContentLoaded", function () {
+      //DOMContent - sets up an event listner that waits for the entire HTML document to be fully loaded before running the fucntion
+      document.addEventListener("DOMContentLoaded", async function () {
+        //This function first hides all of the forms inside of setting-form class by setting the display to none.
         function showForm(formID) {
           document.querySelectorAll(".settings-form").forEach(function (form) {
             form.style.display = "none";
           });
+          //Then it displays the form corresponding to the Form ID by setting it's display style to 'block'.
           document.getElementById(formID).style.display = "block";
         }
 
+        //This function first removes the "selected" class from all links in the 'settings-list'
         function selectedLink(selectedLinkID) {
           document
             .querySelectorAll(".settings-list a")
             .forEach(function (link) {
               link.classList.remove("selected");
             });
+          //Then it adds the 'selected' class to the link with the SelectedLinkID
           document.getElementById(selectedLinkID).classList.add("selected");
         }
-
+        ///// passes the settings id that is cliked to the functions///////////////////////////////////////////
         document
           .getElementById("account-settings-link")
           .addEventListener("click", function () {
@@ -172,8 +211,72 @@
             showForm("password-settings-form");
             selectedLink("password-settings-link");
           });
-        showForm("account-settings-form");
+
+        document
+          .getElementById("preferences-settings-link")
+          .addEventListener("click", function () {
+            showForm("preferences-settings-form");
+            selectedLink("preferences-settings-link");
+          });
+
+        //selects the HTML element with the ID "profile picture", which is the file input by the user.
+        //Event listner looks for a change, then calls the function.
+        document
+          .getElementById("profile-picture")
+          .addEventListener("change", function (event) {
+            //constant for the file chosen by the user
+            const [file] = event.target.files;
+            //if the file was selected
+            if (file) {
+              //points a temp URL to the file selected by the user.
+              const preview = document.getElementById(
+                "profile-picture-preview"
+              );
+              preview.src = URL.createObjectURL(file);
+              preview.style.display = "block";
+              document.getElementById("no-image-text").style.display = "none";
+            }
+          });
+
+        // Fetching user data
+        async function fetchUserData() {
+          try {
+            const token = localStorage.getItem("jwt");
+            if (!token) {
+              throw new Error("no JWT found");
+            }
+            const response = await fetch("/api/user/data", {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            return data;
+          } catch (error) {
+            console.error("Could not fetch user data: ", error);
+          }
+        }
+
+        // Function to populate the settings form with fetched user data
+        function populateSettingsForm(userData) {
+          document.getElementById("firstname").value = userData.firstName || "";
+          document.getElementById("lastname").value = userData.lastName || "";
+          document.getElementById("email").value = userData.email || "";
+        }
+
+        const userData = await fetchUserData();
+        if (userData) {
+          populateSettingsForm(userData);
+        }
+
+        showForm("account-settings-form"); // show the Account Form by default when the page is open.
       });
     </script>
+
+    <!-------------------------------------END of SCRIPT------------------------------------------------------------------------------->
+    <!--------------------------------------------------------------------------------------------------------------------------------->
   </body>
 </html>
