@@ -355,10 +355,15 @@ button[type="submit"]:hover {
 }
 
 #image-preview-frame{
+    color: white;
+    font-weight:300;
     width: 800px;
     height: 200px;
     overflow: hidden;
-    border: 2px dotted #000000;
+    border: 1px dashed #000000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #profile-picture-preview{
@@ -367,5 +372,6 @@ button[type="submit"]:hover {
     object-fit:fill;
     display: none;
 }
+
 
 
