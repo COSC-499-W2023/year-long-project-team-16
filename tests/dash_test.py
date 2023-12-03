@@ -6,6 +6,8 @@
 
 # Each test function in this file requires the correct log in credentials.
 
+
+import time
 import pytest #testing framework 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -13,7 +15,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-LOGIN_PAGE_URL = "http://localhost:8000/index.html"
+INDEX_PAGE_URL = "http://127.0.0.1:5000/"
+DOWNLOAD_DIR = "year-long-project-team-16/pdfs/download"  # Set your download path here
 
 @pytest.fixture(scope="function")
 def browser():
@@ -24,7 +27,7 @@ def browser():
 
 def login(browser, email, password):
     
-    browser.get(LOGIN_PAGE_URL) #navigates the browser to the login page
+    browser.get(INDEX_PAGE_URL) #navigates the browser to the login page
     #textboxes
     email_input = browser.find_element(By.ID, "email")
     password_input = browser.find_element(By.ID, "password")
@@ -44,69 +47,111 @@ def login(browser, email, password):
     # this or simply login_button.click();
     browser.execute_script("arguments[0].click();", login_button)
 
-def test_sidebar_header(browser):
-    login(browser, "remy123@gmail.com", "remy123")  #REPLACE
-    submit_button = browser.find_elements(By.CSS_SELECTOR, ".btn.btn-primary.btn-block")
-    #checks if the list of elements matching the login button selector is empty (length = 0)
-    if len(submit_button)==0:
-        sidebar_header = WebDriverWait(browser,10).until(
-            EC.presence_of_element_located((By.ID, "name of sidebar-header")) #REPLACE
-        )
-        assert sidebar_header.is_displayed(), "Sidebar header is missing"
-        assert "My Dashboard" in sidebar_header.text, "The text'My dashboard' is not present"
-    else:
-        assert False, "Login was not successful"
 
-def test_sidebar_logo(browser):
-    login(browser, "remy123@gmail.com", "remy123") #REPLACE
-    submit_button = browser.find_elements(By.CSS_SELECTOR, ".btn.btn-primary.btn-block")
-    #checks if the list of elements matching the login button selector is empty (length = 0)
-    if len(submit_button)==0:
-        logo = WebDriverWait(browser,10).until(
-            EC.presence_of_element_located((By.TAG_NAME, "name of image")) #REPLACE
-        )
-        assert logo.is_displayed(), "logo is missing"
-    else:
-        assert False, "Login was not successful"
+#def test_sidebar_logo(browser):
+ #   login(browser, "remy123@gmail.com", "remy123") #REPLACE
+  #  submit_button = browser.find_elements(By.CSS_SELECTOR, ".btn.btn-primary.btn-block")
+   # #checks if the list of elements matching the login button selector is empty (length = 0)
+    #if len(submit_button)==0:
+     #   logo = WebDriverWait(browser,10).until(
+      #      EC.presence_of_element_located((By.TAG_NAME, "name of image")) #REPLACE
+       # )
+        #assert logo.is_displayed(), "logo is missing"
+    #else:
+     #   assert False, "Login was not successful"
 
-def test_menu_items(browser):
-    login(browser, "remy123@gmail.com", "remy123")
-    submit_button = browser.find_elements(By.CSS_SELECTOR, ".btn.btn-primary.btn-block")
+def open_index_page(browser):
+    browser.get(INDEX_PAGE_URL)
 
-    if len(submit_button)==0:
-        sidebar = WebDriverWait(browser,10).until(
-            EC.presence_of_element_located((By.ID, "sidebar")) #expected conditions
-        )
-        #home = sidebar.find_element(By.LINK_TEXT, "Home")
-        #assert home.is_displayed(), "home link is missing"
 
-        # To store the text of the toolbar items and their IDs
-        toolbar_items = {
-            "Home":"home",
-            "My Content":"mycontent",
-            "Settings":"Settings",
-            "My Profile":"profile",
-            "Logout":"logout",
-        }
-        # for loop iterates over each item in toolbar items.
-        #checks if every item is displayed
-        for item_text, item_id in toolbar_items.items():
-            item = sidebar.find_element(By.LINK_TEXT, item_text)
-            assert item.is_displayed(), f"{item_text} link is missing"
-    else:
-        assert False, "Login was not successful"
+
+
+
+def test_navigation_links(browser):
+    browser.get(INDEX_PAGE_URL)
+    WebDriverWait(browser, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "navbar")))
+
+    # Dictionary of navigation link IDs and their expected display status
+    navigation_links = {
+        "home": True,
+        "content": True,
+        "settings": True,
+        
+        # If an ID is later added, update this part accordingly
+        "AI ASSISTANT": True,
+        "logout": True,
+    }
+
+    for link_text, is_displayed in navigation_links.items():
+        if link_text == "AI ASSISTANT":
+            link = browser.find_element(By.LINK_TEXT, link_text)
+        else:
+            link = browser.find_element(By.ID, link_text)
+        
+        assert link.is_displayed() == is_displayed, f"{link_text} link is not displayed as expected"
+
 
 def test_generate_content(browser):
-    login(browser, "remy123@gmail.com", "remy123")
-    submit_button = browser.find_elements(By.CSS_SELECTOR, ".btn.btn-primary.btn-block")
+    browser.get(INDEX_PAGE_URL)  # Replace with the actual URL of your form
+    # Wait for the form to be present
+    content_form = WebDriverWait(browser, 10).until(
+        EC.presence_of_element_located((By.ID, "content-form"))
+    )
+    assert content_form.is_displayed(), "Content form is not displayed"
 
-    if len(submit_button)==0:
-        content_form = WebDriverWait(browser,10).until(
-            EC.presence_of_element_located((By.ID, "content-form")) #expected conditions
-        )
-        assert content_form.is_displayed(), "Form is missing"
-    else:
-        assert False, "Login was not successful"
+    # Test 'Length of Content' input field
+    length_input = browser.find_element(By.ID, "length")
+    assert length_input.get_attribute('type') == 'number'
+    assert length_input.get_attribute('placeholder') == "Enter length (e.g., 1000 words)"
+    assert length_input.get_attribute('required') is not None
+
+    # Test 'Difficulty' input field
+    difficulty_input = browser.find_element(By.ID, "difficulty")
+    assert difficulty_input.get_attribute('type') == 'number'
+    assert difficulty_input.get_attribute('min') == '0'
+    assert difficulty_input.get_attribute('max') == '3'
+    assert difficulty_input.get_attribute('required') is not None
+
+    # Test 'Main Topics' input field
+    topics_input = browser.find_element(By.ID, "topics")
+    assert topics_input.get_attribute('type') == 'text'
+    assert topics_input.get_attribute('placeholder') == "Enter main topics"
+    assert topics_input.get_attribute('required') is not None
+
+    # Test 'Upload PDF' input field
+    pdf_upload = browser.find_element(By.ID, "pdf-upload")
+    assert pdf_upload.get_attribute('type') == 'file'
+    assert pdf_upload.get_attribute('accept') == ".pdf"
+
+    # Test 'Generate' button
+    generate_button = browser.find_element(By.ID, "generate-button")
+    assert generate_button.is_displayed()
+    assert generate_button.get_attribute('type') == 'submit'
+
+def test_pdf_generation(browser):
+    browser.get("http://127.0.0.1:5000/")  # Replace with the actual URL of your form
+    # Assuming the form is immediately accessible
+
+    # Fill the form here as required
+    # Example:
+    browser.find_element(By.ID, "length").send_keys("1000")
+    browser.find_element(By.ID, "difficulty").send_keys("2")
+    browser.find_element(By.ID, "topics").send_keys("Example Topics")
+
+    # Submit the form
+    browser.find_element(By.ID, "generate-button").click()
+
+    # Wait for the PDF to download
+    time.sleep(7)  # Wait time depends on your application's response time
+
+    browser.find_element(By.ID, "generate-button").click()
+    time.sleep(7)
+
+    assert browser.current_url != INDEX_PAGE_URL, "Browser did not redirect from the index URL"
+
+#def test_email_sent(browser):
+
+
 
 
 

@@ -272,6 +272,27 @@ def check_file(filename):
     except:
         return jsonify(success=False, message="File does not exist in the database.")
     
+
+@app.route("/chatbot", methods=["POST"])
+def chatbot():
+    # Get the message from the POST request
+    message = request.json.get("message")
+
+    # Set OpenAI API key (if not already set globally)
+    openai.api_key = 'your-api-key'
+
+    # Send the message to OpenAI's API and receive the response
+    completion = openai.Completion.create(
+        engine="text-davinci-003",  # Use the text-davinci-003 model
+        prompt=message,
+        max_tokens=150  # Adjust max_tokens if necessary
+    )
+
+    if completion.choices and completion.choices[0].text.strip() != "":
+        return completion.choices[0].text.strip()
+    else:
+        return 'Failed to Generate response!'
+    
    
     
 if __name__ == '__main__':
