@@ -13,4 +13,8 @@ BACK END SETUP
      - can use the connect function on server.js once the integration is done.
      - close the connection
 
-   - Figure out Bolu's ways
+- settings_db.js: establishes the connection to the MongoDB, using the MongoDB driver. Exports the connectToDB function, which returns a databse connection instance when called.
+
+- userDataAccess.js: Create this new file at the same level as settings_db.js. This will contain your getUserData function and potentially other database interaction functions.
+
+- apiRoutes.js: Create a new file for your Express route handlers that will use the functions from userDataAccess.js to serve API endpoints.

@@ -32,7 +32,7 @@
                     <a href="">LOGOUT</a>
                 </nav>
             </div>
-            <!-- <i class='bx bx-menu'></i> -->
+            
 
         </header>
 
@@ -59,34 +59,38 @@
                     <form id="account-settings-form" class="settings-form">
                         <!-- First Name -->
                         <div class="form-group">
-                            <label for="firstname">First Name:</label>
+                            <label for="firstname">First Name :</label>
                             <input type="text" id="firstname" name="firstname">
                         </div>
 
                         <!-- Last Name -->
                         <div class="form-group">
-                            <label for="lastname"> Last Name:</label>
+                            <label for="lastname"> Last Name :</label>
                             <input type="text" id="lastname" name="lastname">
                         </div>
                 
                         <!-- Username -->
                         <div class="form-group">
-                            <label for="username"> ID: </label>
+                            <label for="username"> ID : </label>
                             <input type="text" id="username" name="username">
                         </div>
                 
                         <!-- Email -->
                         <div class="form-group">
-                            <label for="email">Email:</label>
+                            <label for="email">Email :</label>
                             <input type="email" id="email" name="email">
                         </div>
                 
                         <!-- Profile Picture Upload-->
                         <div class="form-group">
-                            <label for="profile-picture">Profile Picture:</label>
+                            <label for="profile-picture">Profile Picture :</label>
                             <input type="file" id="profile-picture" name="profile-picture" accept="image/*">
+                            <!-- frame for the picture-->
 
-                            <img id="profile-picture-preview" src="#" alt="Profile Picture Preview" style="display: none;">
+                            <div id="image-preview-frame">
+                                <img id="profile-picture-preview" src="#" alt="Profile Picture Preview">
+                                <div id="no-image-text">No profile picture uploaded</div>
+                            </div>
                         </div>
                 
                         <!-- Save Button --> 
@@ -193,8 +197,11 @@
                             const preview = document.getElementById('profile-picture-preview');
                             preview.src = URL.createObjectURL(file);
                             preview.style.display = 'block';
+                            document.getElementById('no-image-text').style.display='none';
                         }
                     });
+
+
                     showForm('account-settings-form'); // show the Account Form by default when the page is open. 
             });
         </script>
