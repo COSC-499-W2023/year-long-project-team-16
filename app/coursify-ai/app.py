@@ -184,7 +184,7 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
-<<<<<<< HEAD
+
     
 @app.route('/settings.html')
 @login_required  # Ensure that the user is logged in
@@ -192,15 +192,7 @@ def settings_html():
     user_id = current_user.get_id()
     user = users_collection.find_one({"_id": ObjectId(user_id)})
     if user:
-=======
-# Auto populate settings.
-@app.route('/settings')
-@login_required 
-def settings():
-     user_id = current_user.get_id()
-     user = users_collection.find_one({"_id": ObjectId(user_id)})
-     if user:
->>>>>>> 5672cf5cabc25f541cc11403897cbc98dbf67714
+
         return render_template('settings.html', user=user)
     else:
         flash("User not found.")
