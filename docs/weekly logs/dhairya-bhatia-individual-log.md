@@ -48,15 +48,7 @@ Created an SDLC document with Vinu to describe which Software development method
 
 <img width="1180" alt="Screenshot 2023-10-29 at 8 24 09 PM" src="https://github.com/COSC-499-W2023/year-long-project-team-16/assets/72479713/a433da5a-6b9b-404f-b55d-ca2ab5b38bfb">
 
-## Week 9
-### Date 
-10/09/2023-10/22/2023
-### Tasks Completed
- - Worked on Design Video
- -  Testing for PDF Generation and updated content Page
 
-
- <img width="1026" alt="Screenshot 2023-12-03 at 8 55 37 PM" src="https://github.com/COSC-499-W2023/year-long-project-team-16/assets/72479713/34e3b131-91de-45ec-bab5-fd4e0ee3653a">
 
 
 
