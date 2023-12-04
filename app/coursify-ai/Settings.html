@@ -103,13 +103,13 @@
           <form id="password-settings-form" class="settings-form" style="display: none">
             <!-- Current password -->
             <div class="form-group">
-              <label for="current-password">Current Password:</label>
-              <input type="password" id="current-password" name="current-password" value="{{ user.get('password', '') }}"/>
+              <label for="current-password">Enter Current Password:</label>
+              <input type="password" id="current-password" name="current-password"/>
             </div>
 
             <!-- New Password -->
             <div class="form-group">
-              <label for="new-password">New Password:</label>
+              <label for="new-password">Enter New Password:</label>
               <input type="password" id="new-password" name="new-password" />
             </div>
 
@@ -216,7 +216,7 @@
             }
           });
 
-        // Fetching user data
+        /* Fetching user data (THIS MAY NOT BE NEEDED)
         async function fetchUserData() {
           try {
             const token = localStorage.getItem("jwt");
@@ -249,7 +249,7 @@
         if (userData) {
           populateSettingsForm(userData);
         }
-
+        */
         showForm("account-settings-form"); // show the Account Form by default when the page is open.
       });
     </script>
