@@ -65,9 +65,8 @@ header{
     justify-content: space-between;
     align-items: center;
 }
-.left{
+
     
-}
 .left h1{
     font-size: 5.6rem;
     font-weight: 700;
@@ -90,9 +89,7 @@ header{
 
 
 
-.link_container a{
-    
-}
+
 .link_container img{
     width: 5rem;
 }
@@ -121,6 +118,7 @@ header{
     text-align: left;
     margin-top: 20px;
     width: 100%;
+   
 }
 
 .form-group {

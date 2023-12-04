@@ -65,9 +65,7 @@ header{
     justify-content: space-between;
     align-items: center;
 }
-.left{
-    
-}
+
 .left h1{
     font-size: 5.6rem;
     font-weight: 700;
@@ -86,9 +84,7 @@ header{
 .navbar a:hover{
     color: black;
 }
-.link_container a{
-    
-}
+
 .link_container img{
     width: 5rem;
 }
@@ -372,6 +368,3 @@ button[type="submit"]:hover {
     object-fit:fill;
     display: none;
 }
-
-
-

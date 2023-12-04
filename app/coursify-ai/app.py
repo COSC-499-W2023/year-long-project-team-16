@@ -17,16 +17,17 @@ from pymongo import MongoClient
 from gridfs import GridFS
 from PyPDF2 import PdfReader
 from werkzeug.utils import secure_filename
-from flask_mail import Mail,Message
 from bson.objectid import ObjectId
 
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-from flask_mail import Mail, Message
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 from itsdangerous import URLSafeTimedSerializer, SignatureExpired, BadSignature
-# Other imports...
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+
+
 
 
 app = Flask(__name__, template_folder='my_templates')
@@ -37,18 +38,13 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 
-app.config['MAIL_SERVER'] = 'smtp-mail.outlook.com' #we use outlook because gmail was wasting time
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True 
-app.config['MAIL_USERNAME'] = 'coursify@outlook.com'  
-app.config['MAIL_PASSWORD'] = 'Gunners4Eva.' 
 
 app.secret_key = 'coursifyai1234'
 
 serializer = URLSafeTimedSerializer(app.secret_key)
 
 
-mail = Mail(app)
+
 
 # Setup MongoDB connection
 client = MongoClient('mongodb+srv://Remy:1234@cluster0.vgzdbrr.mongodb.net/')
@@ -74,7 +70,17 @@ def load_user(user_id):
     if not user:
         return None
     return User(user_id=user["_id"], email=user["email"])
+@app.route('/')
+def home():
+    # If the user is authenticated, redirect to the dashboard
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    # Otherwise, show the homepage with login and register options
+    return render_template('homepage.html')
 
+SENDGRID_API_KEY = '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'  
+
+   
     # Registration Route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -100,28 +106,31 @@ def register():
             "verified": False
         }).inserted_id
 
-        # Generate a token
         token = serializer.dumps(email, salt='email-confirmation-salt')
 
         # Send verification email
         confirm_url = url_for('confirm_email', token=token, _external=True)
-        html = render_template('activate.html', confirm_url=confirm_url)  # Create an HTML template for the email
         subject = "Please confirm your email"
-        send_email(email, subject, html)
+        send_email(email, subject, confirm_url)
 
         flash('A confirmation email has been sent.', 'success')
         return redirect(url_for('login'))
     return render_template('register.html')
-
 # Send Email Function
-def send_email(to, subject, template):
-    msg = Message(
-        subject,
-        recipients=[to],
-        html=template,
-        sender=app.config['MAIL_USERNAME']
+def send_email(to_email, subject, confirm_url):
+    html_content = render_template('email_verification.html', confirm_url=confirm_url)
+    message = Mail(
+        from_email='your-email@example.com',  # Replace with your verified sender email
+        to_emails=to_email,
+        subject=subject,
+        html_content=html_content
     )
-    mail.send(msg)
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        response = sg.send(message)
+        print(f"Email sent with status code: {response.status_code}")
+    except Exception as e:
+        print(f"Error sending email: {e}")
 
 # Email Confirmation Route
 @app.route('/confirm/<token>')
@@ -164,23 +173,29 @@ def login():
     return render_template('login.html')
 
 
-# Logout Route
-@app.route('/logout')
+@app.route('/index')
 @login_required
+def index():
+    # Dashboard page after successful login
+    return render_template('index.html')
+
+@app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('index'))
+    return redirect(url_for('home'))
 
-@app.route('/settings')
-@login_required
-def settings():
-     user_id = current_user.get_id()
-     user = users_collection.find_one({"_id": ObjectId(user_id)})
-     if user:
+    
+@app.route('/settings.html')
+@login_required  # Ensure that the user is logged in
+def settings_html():
+    user_id = current_user.get_id()
+    user = users_collection.find_one({"_id": ObjectId(user_id)})
+    if user:
         return render_template('settings.html', user=user)
-     else:
+    else:
         flash("User not found.")
         return redirect(url_for('index'))
+
 
 
 @app.route('/share/<file_id>')
@@ -244,28 +259,41 @@ def share_via_email():
     msg.body = f'Here is the file you requested: {share_url}'
 
     # Send the email
-    mail.send(msg)
-
-    return 'Email sent!' 
-
-@app.route('/')
-@login_required
-def index():
-    return render_template('index.html')
 
 @app.route('/content')
 def content():
     return render_template('content.html')
 
 
-@app.route('/settings.html')
-def settings_html():  
-    return render_template('settings.html')
-
 
 @app.route('/ai.html')
 def ai_html():
     return render_template('ai.html')
+@app.route('/api/chat', methods=['POST'])
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    try:
+        user_input = request.json['message']
+        print("User input received:", user_input)  # Debugging log
+
+        openai.api_key = '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'
+        
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": user_input}
+            ]
+        )
+        print("Response from OpenAI:", response)  # Debugging log
+
+        ai_reply = response['choices'][0]['message']['content']
+        print("AI Reply:", ai_reply)  # Debugging log
+
+        return jsonify({'reply': ai_reply})
+    except Exception as e:
+        print("An error occurred:", e)  # Debugging log
+        return jsonify({'error': str(e)}), 500
 
 def is_latex(text):
 
@@ -440,7 +468,14 @@ def chatbot():
     else:
         return 'Failed to Generate response!'
     
-   
+   # User Loader
+@login_manager.user_loader
+def load_user(user_id):
+    user = users_collection.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        return None
+    return User(user_id=user["_id"], email=user["email"])
+
     
 if __name__ == '__main__':
     app.debug = True
