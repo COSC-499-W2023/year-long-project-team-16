@@ -38,7 +38,7 @@ Password Function
   - Provide clear error messages for texts that do not match.
 
 - All forms should have the method of submission 'POST' in order to communicate the information chnaged by the user to the form.
-- EXAMPLE : <form action="{{ url_for('change_password') }}" method="post"> || @app.route('/change_password', methods=['POST'])
+- EXAMPLE : form action="{{ url_for('change_password') }}" method="post" || @app.route('/change_password', methods=['POST'])
 - This must be done for ALL settings.
 
 Minor changes:
