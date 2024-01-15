@@ -1,3 +1,4 @@
+from mailbox import Message
 from flask import flash
 from datetime import datetime
 import os
@@ -36,7 +37,7 @@ bcrypt = Bcrypt(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-
+openai.api_key = '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'
 
 
 app.secret_key = 'coursifyai1234'
@@ -278,7 +279,7 @@ def chat():
         user_input = request.json['message']
         print("User input received:", user_input)  # Debugging log
 
-        openai.api_key = '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'
+        
         
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
@@ -343,7 +344,33 @@ def wrap_text(text, max_width, font_name, font_size):
         wrapped_text.append(line)
 
     return wrapped_text
-
+def content(prompt, length):
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return response['choices'][0]['message']['content']
+    except Exception as e:
+        print(f"Error calling OpenAI API: {e}")
+        return None
+def call_openai_api(prompt):
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return response['choices'][0]['message']['content']
+    except Exception as e:
+        print(f"Error calling OpenAI API: {e}")
+        return None
+    
 @app.route('/generate_pdf', methods=['POST'])
 def generate_pdf():
     # Create a subdirectory for PDFs if it doesn't exist
@@ -354,21 +381,9 @@ def generate_pdf():
     # Process form data
     length = request.form.get('length', type=int, default=100)
     prompt = request.form.get('topics', default='')
-    difficulty = request.form.get('difficulty',default='')
+    difficulty = request.form.get('difficulty',type=int,default = 1)
 
-    # Process optional PDF upload
-    pdf_upload = request.files.get('pdf-upload')
-    uploaded_text = ""
-
-    if pdf_upload and pdf_upload.filename:
-        pdf_path = os.path.join(pdf_directory, secure_filename(pdf_upload.filename))
-        pdf_upload.save(pdf_path)
-        uploaded_text = extract_text_from_pdf(pdf_path)
-
-        # Combine uploaded text with user's topics
-    combined_prompt = uploaded_text + "\n" + prompt
-
-    pdf_basename = sanitize_filename(combined_prompt)
+    pdf_basename = sanitize_filename(prompt)
 
     # Ensure the filename is not empty
     pdf_basename = pdf_basename if pdf_basename else 'generated_file'
@@ -378,54 +393,125 @@ def generate_pdf():
     unique_suffix = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
     pdf_filename = f"{pdf_basename}_{timestamp}_{unique_suffix}.pdf"
 
-    # Set OpenAI API key and get response
-    openai.api_key = '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'  
-    response = openai.Completion.create(
-        engine="text-davinci-003",
-        prompt=prompt,
-        max_tokens=1000
-    )
-    generated_text = response.choices[0].text.strip()
+    if difficulty == 1:
+        diff = "basic"
+    elif difficulty == 2:
+        diff = "intermediate"
+    elif difficulty == 3:
+        diff = "advanced"
 
     
+    toc = call_openai_api("Give Table of contents for topic: " +prompt+"(such that there are max 5 topics and each topic has two sub topics. Topics should be upper Case and subtopics otherwise. Dont Start with heading : Table of contents, just show contents with difficulty " + diff)
+    if toc is None:
+        return jsonify(success=False, error="Failed to generate text from OpenAI API")
+    
 
+
+
+    
     # Define font properties and margins
     font_name = "Helvetica"
     font_size = 12
     left_margin = 72
     top_margin = 720
     line_height = 14
+    page_width, page_height = letter
+    bottom_margin = 72
+    content_width = page_width - 2 * left_margin
 
     # Generate PDF
     pdf_path = os.path.join(pdf_directory, pdf_filename)
     c = canvas.Canvas(pdf_path, pagesize=letter)
     c.setFont(font_name, font_size)
+    toc_dict = {}
+    current_topic = ""
 
-    # Process the text
-    parts = re.split(r"(\$.*?\$)", generated_text)
+    
+
     y_position = top_margin
+    c.drawString(left_margin, y_position, "Table of Contents")
+    y_position -= line_height
+    for line in toc.split('\n'):
+        
+        is_topic = line.isupper()  # Assuming topics are in uppercase
+        contains_latex = is_latex(line)  # Renamed the variable here
 
-    for part in parts:
-        if is_latex(part):
-            latex_image_io = render_latex(part[1:-1])  # Remove $ symbols
+        if contains_latex:
+            # Process LaTeX content
+            latex_image_io = render_latex(line[1:-1])  # Remove $ symbols
             c.drawImage(latex_image_io, left_margin, y_position, width=200, height=100, preserveAspectRatio=True, anchor='n')
             y_position -= 100  # Adjust for image height
         else:
-            wrapped_text = wrap_text(part, 450, font_name, font_size)
-            for line in wrapped_text:
-                c.drawString(left_margin, y_position, line)
-                y_position -= line_height
+            # Format as a main topic or subtopic
+            if is_topic:
+                
+                c.setFont("Helvetica-Bold", 14)
+                y_position -= 20  # Extra space before a main topic
+            else:
+                if current_topic:  # Ensure there is a current topic
+                    toc_dict[current_topic].append(line.strip())
+                c.setFont("Helvetica", 12)
+                line = "   " + line  # Indent subtopics
 
-    c.save()
+            # Add line to PDF
+            c.drawString(left_margin, y_position, line)
+            y_position -= line_height
+
+        if y_position < 100:  # Check for end of page and create a new one if needed
+            c.showPage()
+            c.setFont("Helvetica", 12)
+            y_position = top_margin
     
-     # Save the PDF to MongoDB
-    with open(pdf_path, 'rb') as f:
-        fs.put(f, filename=pdf_filename, content_type='application/pdf')
+    c.showPage()
+    c.setFont("Helvetica", 12)
+    y_position = top_margin
 
+    
+    lines = toc.split('\n')
+    
+    print(lines)
+    for line in lines:
+        is_topic = line.isupper()  # Assuming topics are in uppercase
+        contains_latex = is_latex(line)  # Renamed the variable here
+
+        if contains_latex:
+            # Process LaTeX content
+            latex_image_io = render_latex(line[1:-1])  # Remove $ symbols
+            c.drawImage(latex_image_io, left_margin, y_position, width=200, height=100, preserveAspectRatio=True, anchor='n')
+            y_position -= 100  # Adjust for image height
+            
+        else:
+            # Format as a main topic or subtopic
+            if is_topic:
+                c.setFont("Helvetica-Bold", 14)
+                wrapped_text = wrap_text(line, content_width, font_name, 14)
+                print(wrapped_text)
+                
+            else:
+                
+                c.setFont("Helvetica", 12)
+                c.drawString(left_margin, y_position, line)
+                y_position -= line_height 
+                prompt2 = content("explain in 3 lines about the following topic " +line + "related to " + prompt,length)
+                if prompt2 is None:
+                    return jsonify(success=False, error="Failed to generate text from OpenAI API")
+                wrapped_text = wrap_text(prompt2, content_width, font_name, 12)
+                print ("sub topic done")
+                
+            for text_line in wrapped_text:
+                if y_position < bottom_margin:  # Check if we need a new page
+                    c.showPage()
+                    c.setFont(font_name, 12)
+                    y_position = top_margin
+                c.drawString(left_margin, y_position, text_line)
+                y_position -= line_height 
+    
+    c.save()
 
     # Respond with the URL of the PDF
     pdf_url = url_for('get_pdf', filename=pdf_filename)
     return jsonify(success=True, pdf_url=pdf_url)
+
 
 
 @app.route('/pdf/<filename>')
