@@ -142,7 +142,7 @@
       <div class="note-title" id="detailTitle"></div>
       <div class="note-summary">Click download to view the PDF...</div>
       <a href="" id="downloadLink" class="download-btn">Download</a>
-      <button onclick="showForm()" class="share-btn">Share</button>
+      <button onclick="showForm()" id="shareButton" class="share-btn">Share</button>
      </div> 
     </div> 
   </div>
@@ -166,6 +166,9 @@
   // Show the form
   //document.getElementById('shareForm').style.display = 'block';
 //}
+document.getElementById('shareButton').addEventListener('click', function() {
+  document.getElementById('shareForm').scrollIntoView({behavior: "smooth"});
+});
 function showDetails(id, filename) {
   document.getElementById('detailTitle').textContent = filename;
   document.getElementById('downloadLink').href = "{{ url_for('get_pdf', filename='') }}" + filename;
