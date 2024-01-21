@@ -45,3 +45,51 @@ Minor changes:
 
 - change the third settings option from "AI assitant" to "preferences" - Add notification settings - Add the difficulty level
 - Add an avatar as the default profile picture.
+
+Flask : package in python. web framework, collection of tools and libraries.
+
+1. Give the "save changes" button an action within the form: action="{{ url_for('update_account') }}"
+2. Form Submission has to be handled in flask.
+3. Flask route:
+
+@app.route('/update_account', methods=['POST])  || @app.ropute() is a decorator that tells flask what URL should trigger the function that is written next. 'POST' requests are for submitting post data
+@login_required                                 || only authenticated users can access
+def update_account_info();                      || method
+  first_name = request.form.get('firstname')    || data form the users form is fetched
+  last_name = request.form.get('lastname')
+  email = request.form.get('email')
+
+    user_id = current_user.get_id()                                                       || gets the current user's ID
+
+    user = users_collection.find_one({"_id": ObjectId(user_id)})                          || fetches the user's pre-existing data from the DB
+
+    if user:
+
+      updates = {}                                                                        || The changes are held in this empty dictionary
+      if user.get('first_name') != first_name:                                            || compares each user data to the data submitted from the form
+          updates['first_name'] = first_name                                              || if any changes are found, the changes are added to the empty dictionary
+
+      if user.get('last_name') != last_name:                         
+          updates['last_name'] = last_name
+
+      if user.get('email') != email:
+          updates['email'] = email
+
+      if updates:                                                   
+          users_collection.update_one({"_id": ObjectId(user_id)}, {"$set": updates})      || update the data in the DB if the updates directory is not empty
+          flash('Your account has been updated successfully.')                            || flash sends messages to the user
+      else:
+          flash('No changes were made to your account.')
+
+    else:
+
+      flash('User not found.')
+      return redirect(url_for('settings_html'))
+
+    return redirect (url_for('settings_html'))
+
+
+4. Profile picture: TBD
+
+
+
