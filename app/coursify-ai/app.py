@@ -948,6 +948,7 @@ def submit_review():
     review_text = request.form['review_text']
     user_id = ObjectId(current_user.get_id())
     subject = request.form['subject']
+    file = request.form['file']
     
     user_details = users_collection.find_one({"_id": user_id})
     
@@ -955,7 +956,7 @@ def submit_review():
         first_name = user_details.get('first_name')
         last_name = user_details.get('last_name')
 
-    review = {"user_id": current_user.get_id(), "first_name": first_name, "last_name": last_name, "star_rating": star_rating, "review_text": review_text, "subject": subject, "timestamp": datetime.utcnow()}
+    review = {"user_id": current_user.get_id(), "first_name": first_name, "last_name": last_name, "star_rating": star_rating, "review_text": review_text, "subject": subject, "file": file, "timestamp": datetime.utcnow()}
     reviews_collection.insert_one(review)
 
     flash('Review submitted successfully.')
@@ -964,9 +965,17 @@ def submit_review():
 @app.route('/reviews')
 @login_required
 def reviews():
+    # Define user_id here
+    user_id = ObjectId(current_user.get_id())
 
     all_reviews = reviews_collection.find().sort("timestamp", -1)
-    return render_template('reviews.html', reviews=all_reviews)
+    
+    fs = GridFS(db)
+    
+    user_files = fs.find({"user_id": user_id})
+    
+    return render_template('reviews.html', reviews=all_reviews, files=user_files)
+
 
 
 
