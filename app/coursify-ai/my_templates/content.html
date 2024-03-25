@@ -104,7 +104,7 @@
               <div class="note-title" id="detailTitle"></div>
               <a href="" id="downloadLink" class="download-btn">Download</a>
               <a href="" id="PreviewLink" class="preview-btn">Preview</a>
-
+              <a href="" id="renameLink" class="rename-btn">Rename</a>
               <button onclick="showForm()" id="shareButton" class="share-btn">
                 Share
               </button>
@@ -340,6 +340,28 @@
         // Example of how you might call handleQuizGeneration from within showDetails or another appropriate place
         // showDetails function or similar needs to setup 'generateQuizButton.onclick' to call 'handleQuizGeneration' with the correct fileId
       });
+      document.getElementById('renameLink').addEventListener('click', function(e) {
+        e.preventDefault();
+    
+        // Get the file id from the clicked rename button
+        var file_id = this.getAttribute('data-id');
+    
+        var new_name = prompt('Enter the new name for the file');
+    
+        fetch('/rename', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'file_id=' + encodeURIComponent(file_id) + '&new_name=' + encodeURIComponent(new_name)
+        }).then(function(response) {
+            if (response.ok) {
+                alert('File renamed successfully');
+            } else {
+                alert('Failed to rename file');
+            }
+        });
+    });
     </script>
 
     <footer id="footer">&copy; 2023 CoursifyAI. All rights reserved.</footer>
