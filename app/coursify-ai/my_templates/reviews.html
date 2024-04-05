@@ -89,6 +89,11 @@
                     <option value="Business">Business</option>
                     <option value="Other">Other</option>
                 </select>
+                <select name="file">
+                    {% for file in files %}
+                    <option value="{{ file._id }}">{{ file.filename }}</option>
+                    {% endfor %}
+                </select>
                 <textarea name="review_text" placeholder="Write your review here..."></textarea>
                 <input type="hidden" name="star_rating" id="star_rating" value=""> <!-- Hidden field to store rating -->
                 <button type="submit">Submit Review</button>
@@ -127,6 +132,7 @@
                     <div class="review-rating">Rating: {{ review.star_rating }} / 5</div>
                     <div class="review-subject">Subject: {{ review.subject }}</div>
                     <div class="review-text">{{ review.review_text }}</div>
+                    <div class="review-filename">File: {{ review.filename }}</div>
                 </div>
                 {% else %}
                 <div>No reviews yet.</div>
