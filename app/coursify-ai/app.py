@@ -110,7 +110,20 @@ app.config['MAIL_PASSWORD'] = 'Gunners4Eva$'
 
 mail = Mail(app)
 
+@app.route('/rename', methods=['POST'])
+def rename_file():
+    file_id = request.form.get('file_id')
+    new_name = request.form.get('new_name')
+    
+    file_id = ObjectId(file_id)
 
+    # Fetch the file from GridFS
+    grid_out = fs.get(file_id)
+
+    # Update the filename
+    db.fs.files.update_one({'_id': grid_out._id}, {'$set': {'filename': new_name}})
+
+    return {'status': 'success'}, 200
 
 # User model
 class User(UserMixin):
