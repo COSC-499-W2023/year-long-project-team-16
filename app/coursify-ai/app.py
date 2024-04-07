@@ -932,6 +932,10 @@ def generate_slides(prompt, length, difficulty,):
             content_box = slide.placeholders[1]
             tf = content_box.text_frame
             tf.text = chunk  # This sets the initial paragraph
+            for paragraph in tf.paragraphs:
+                for run in paragraph.runs:
+                    run.font.size = Pt(15)  # Set content font size to 15
+
             # For more complex formatting, you can add more paragraphs or format this one
             print("Topic done")
 
