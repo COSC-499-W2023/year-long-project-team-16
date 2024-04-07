@@ -886,6 +886,7 @@ def generate_slides(prompt, length, difficulty,):
     slide = prs.slides.add_slide(slide_layout)
     title = slide.shapes.title
     title.text = "Table of Contents"
+    title.text_frame.paragraphs[0].runs[0].font.size = Pt(30)  # Set title font size to 30
 
     # Split the table of contents into chunks that fit on a slide
     toc_chunks = split_content_into_chunks(toc)
@@ -927,6 +928,10 @@ def generate_slides(prompt, length, difficulty,):
             slide = prs.slides.add_slide(slide_layout)
             title = slide.shapes.title
             title.text = line.strip()
+            #if the title exists, set the font size to 24
+            if(title.text):
+                title.text_frame.paragraphs[0].runs[0].font.size = Pt(24)
+            
 
             # Add chunk to the slide
             content_box = slide.placeholders[1]
