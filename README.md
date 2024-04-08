@@ -26,10 +26,10 @@ Follow these steps to get your development environment set up:
 
 2. **Navigate to the Project Directory**
 
-   Change into the project directory:
+   Open your project repository in VS-Code and navigate to the coursify-ai folder where the Dockerfile is 
 
    ```bash
-   cd year-long-project-team-16/app/coursify-ai
+   cd app/coursify-ai
    ```
 
    Ensure you are in the directory containing the `Dockerfile`.
