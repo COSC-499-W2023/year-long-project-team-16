@@ -29,7 +29,7 @@ Follow these steps to get your development environment set up:
    Change into the project directory:
 
    ```bash
-   cd <repository-name>/app/coursify-ai
+   cd year-long-project-team-16/app/coursify-ai
    ```
 
    Ensure you are in the directory containing the `Dockerfile`.
